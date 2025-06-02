@@ -93,3 +93,42 @@ write.table(Gonad_Counts, file = "Gonad_Counts.txt", sep = "\t", quote = FALSE, 
 write.table(Liver_Counts, file = "Liver_Counts.txt", sep = "\t", quote = FALSE, col.names = NA)
 
 rm(summary_files, brain_dir, gonad_dir, liver_dir, bam_files, gtf_file, bam_files_str, gtf_file_quoted)
+
+
+
+zero <- rownames(All_Counts)[rowSums(All_Counts == 0) == ncol(All_Counts)]
+length(zero)
+#WE have 2484 with zero expression across all samples. 
+colSums(All_Counts)
+
+
+colSums(All_Counts) %>% barplot(., las = 3, ylab = "Reads Mapped Per Sample")
+
+boxplot(as.matrix(All_Counts) ~ col(All_Counts), 
+        ylab = "Counts", xlab = "Samples", names = colnames(All_Counts))
+
+
+#Brain Graphs
+colSums(Brain_Counts)
+colSums(Brain_Counts) %>% barplot(., las = 3, ylab = "Reads Mapped Per Sample", cex.names = 0.7, main = "Brain Samples")
+
+#Plus 0.5 to avoid log(0) errors
+logBrain = log2(as.matrix(Brain_Counts) + 0.5)
+boxplot(as.matrix(logBrain) ~ col(Brain_Counts), las=3, cex.axis = 0.4,
+        ylab = "Counts", xlab = "Samples", names = colnames(Brain_Counts), main = "Log counts of Brain samples")
+
+#Gonad Graphs
+colSums(Gonad_Counts)
+colSums(Gonad_Counts) %>% barplot(., las = 3, ylab = "Reads Mapped Per Sample", cex.names = 0.7, main = "Gonad Samples")
+
+logGonad = log2(as.matrix(Gonad_Counts) + 0.5)
+boxplot(as.matrix(logGonad) ~ col(Gonad_Counts), las=3, cex.axis = 0.4,
+        ylab = "Counts", xlab = "Samples", names = colnames(Gonad_Counts), main = "Log counts of Gonad samples")
+
+#Liver Graphs
+colSums(Liver_Counts)
+colSums(Liver_Counts) %>% barplot(., las = 3, ylab = "Reads Mapped Per Sample", cex.names = 0.7, main = "Liver Samples")
+
+logLiver = log2(as.matrix(Liver_Counts) + 0.5)
+boxplot(as.matrix(logLiver) ~ col(Liver_Counts), las=3, cex.axis = 0.4,
+        ylab = "Counts", xlab = "Samples", names = colnames(Liver_Counts), main = "Log counts of Liver samples")

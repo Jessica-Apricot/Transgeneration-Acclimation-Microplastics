@@ -1,12 +1,16 @@
 ## Goseq
 #BiocManager::install("goseq")
 #BiocManager::install("org.Dr.eg.db")
+BiocManager::install("topGO")
 library(goseq)
 library(dplyr)
 library(org.Dr.eg.db)
+library(topGO)
 #For now im going to use danRer6 as it has both gene length and go annotations, will revisit if need danRer11
 
 #We will do Brain F1, Gonad HLD, Gonad Microplastics, Gonad F1 and Liver HLD
+
+gene_info <- read.delim("gene_info.tsv", header = TRUE, sep = "\t")
 
 #### Brain F1 Go analysis #####
 
@@ -60,7 +64,15 @@ sum(GoHL_GO.padj < 0.05)
 GoHL_GO.sig <- GoHL_GO$category[GoHL_GO.padj < 0.05]
 length(GoHL_GO.sig)
 head(GoHL_GO.sig)
+View(GoHL_GO.sig)
 
+showSigOfNodes(GoHL_GO.sig, score(sigGenes), firstSigNodes = 5, useInfo = "all")
+#First 5 GO Terms
+#GO:0045202 - Synapse
+#GO:0030054 - Cell junction
+#GO:0007267 - cell - cell signalling
+#GO:0099537 - Trans synaptic signalling
+#GO:0005886 - plasma membrane
 
 ##### Gonad High-DMSO #####
 
@@ -85,6 +97,12 @@ GoHD_GO.sig <- GoHD_GO$category[GoHD_GO.padj < 0.05]
 length(GoHD_GO.sig)
 head(GoHD_GO.sig)
 #282 significant GO terms
+
+#First 5 significant GO terms
+#GO:0045202 - Synapse
+#GO:0030054 - Cell Junction
+#GO:0043005 - Neuron Projection
+#
 
 #### Gonad Microplastics #####
 ##### Gonad MP vs MPD ######
