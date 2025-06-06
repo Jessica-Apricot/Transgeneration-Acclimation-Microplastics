@@ -5,13 +5,12 @@ library(DESeq2)
 library(edgeR)
 library(limma)
 
+#The "Script" R script makes the following files 
 
-
-fc_results <- read.table("fc_results.txt", sep= "\t", header=TRUE)
-All_Counts <- read.table("All_Counts.txt", sep="\t", header = TRUE,  row.names = 1)
-Brain_Counts <- read.table("Brain_Counts.txt", sep="\t", header=TRUE, row.names =1)
-Gonad_Counts <- read.table("Gonad_Counts.txt", sep="\t", header=TRUE, row.names = 1)
-Liver_Counts <- read.table("Liver_Counts.txt", sep="\t", header=TRUE, row.names = 1)
+#All_Counts <- read.table("All_Counts.txt", sep="\t", header = TRUE,  row.names = 1)
+#Brain_Counts <- read.table("Brain_Counts.txt", sep="\t", header=TRUE, row.names =1)
+#Gonad_Counts <- read.table("Gonad_Counts.txt", sep="\t", header=TRUE, row.names = 1)
+#Liver_Counts <- read.table("Liver_Counts.txt", sep="\t", header=TRUE, row.names = 1)
 
 ### DESeq Analysis ####
 
@@ -114,7 +113,7 @@ plotPCA(rlog(HLD.Br_conds_dds, blind=TRUE), intgroup="conds")
 #### Brain Microplastics ####
 
 #conditions
-MP.Br_conds <- c("MP", "DMSO", "DMSO", "MPDMSO", "DMSO", "MP", "MP", "MPDMSO", "MPDMSO", "MP", "DMSO")
+MP.Br_conds <- c("MP", "DMSO", "DMSO", "MPD", "DMSO", "MP", "MP", "MPD", "MPD", "MP", "DMSO")
 
 MP.Br_metadata <- data.frame(row.names = colnames(MP.MPD.D.Brain),
                            conds = factor(MP.Br_conds))
@@ -128,12 +127,12 @@ MP.Br_conds_dds <- MP.Br_conds_dds[keep,]
 MP.Br_conds_dds <- DESeq(MP.Br_conds_dds)
 
 #Pairwise
-#MP vs MPDMSO
-Br.res_MP.MPD <- results(MP.Br_conds_dds, contrast = c("conds", "MP", "MPDMSO"))
+#MP vs MPDEHP
+Br.res_MP.MPD <- results(MP.Br_conds_dds, contrast = c("conds", "MP", "MPD"))
 # MP vs DMSO
 Br.res_MP.DMSO <- results(MP.Br_conds_dds, contrast = c("conds", "MP", "DMSO"))
-# MPDMSO vs DMSO
-Br.res_MPD.DMSO <- results(MP.Br_conds_dds, contrast = c("conds", "MPDMSO", "DMSO"))
+# MPDEHP vs DMSO
+Br.res_MPD.DMSO <- results(MP.Br_conds_dds, contrast = c("conds", "MPD", "DMSO"))
 
 #remove na values
 Br.res_MP.MPD <- na.omit(Br.res_MP.MPD)
@@ -218,7 +217,7 @@ plotPCA(rlog(HLD.Go_conds_dds, blind=TRUE), intgroup="conds")
 #### Gonad Microplastics ####
 
 #conditions
-MP.Go_conds <- c("DMSO", "MP", "MPDMSO", "MP", "MP", "MPDMSO", "MPDMSO", "DMSO", "DMSO", "MP", "DMSO")
+MP.Go_conds <- c("DMSO", "MP", "MPD", "MP", "MP", "MPD", "MPD", "DMSO", "DMSO", "MP", "DMSO")
 
 MP.Go_metadata <- data.frame(row.names = colnames(MP.MPD.D.Gonad),
                              conds = factor(MP.Go_conds))
@@ -232,12 +231,12 @@ MP.Go_conds_dds <- MP.Go_conds_dds[keep,]
 MP.Go_conds_dds <- DESeq(MP.Go_conds_dds)
 
 #Pairwise
-#MP vs MPDMSO
-Go.res_MP.MPD <- results(MP.Go_conds_dds, contrast = c("conds", "MP", "MPDMSO"))
+#MP vs MPDEHP
+Go.res_MP.MPD <- results(MP.Go_conds_dds, contrast = c("conds", "MP", "MPD"))
 # MP vs DMSO
 Go.res_MP.DMSO <- results(MP.Go_conds_dds, contrast = c("conds", "MP", "DMSO"))
-# MPDMSO vs DMSO
-Go.res_MPD.DMSO <- results(MP.Go_conds_dds, contrast = c("conds", "MPDMSO", "DMSO"))
+# MPDEHP vs DMSO
+Go.res_MPD.DMSO <- results(MP.Go_conds_dds, contrast = c("conds", "MPD", "DMSO"))
 
 #remove na values
 Go.res_MP.MPD <- na.omit(Go.res_MP.MPD)
@@ -323,7 +322,7 @@ plotPCA(rlog(HLD.Li_conds_dds, blind=TRUE), intgroup="conds")
 
 #### Liver Microplastics ####
 
-MP.Li_conds <- c("MP", "MP", "MPDMSO", "DMSO", "DMSO", "DMSO", "MP", "MPDMSO", "MPDMSO", "MP", "DMSO")
+MP.Li_conds <- c("MP", "MP", "MPD", "DMSO", "DMSO", "DMSO", "MP", "MPD", "MPD", "MP", "DMSO")
 
 MP.Li_metadata <- data.frame(row.names = colnames(MP.MPD.D.Liver),
                              conds = factor(MP.Li_conds))
@@ -337,12 +336,12 @@ MP.Li_conds_dds <- MP.Li_conds_dds[keep,]
 MP.Li_conds_dds <- DESeq(MP.Li_conds_dds)
 
 #Pairwise
-#MP vs MPDMSO
-Li.res_MP.MPD <- results(MP.Li_conds_dds, contrast = c("conds", "MP", "MPDMSO"))
+#MP vs MPDEHP
+Li.res_MP.MPD <- results(MP.Li_conds_dds, contrast = c("conds", "MP", "MPD"))
 # MP vs DMSO
 Li.res_MP.DMSO <- results(MP.Li_conds_dds, contrast = c("conds", "MP", "DMSO"))
-# MPDMSO vs DMSO
-Li.res_MPD.DMSO <- results(MP.Li_conds_dds, contrast = c("conds", "MPDMSO", "DMSO"))
+# MPDEHP vs DMSO
+Li.res_MPD.DMSO <- results(MP.Li_conds_dds, contrast = c("conds", "MPD", "DMSO"))
 
 #remove na values
 Li.res_MP.MPD <- na.omit(Li.res_MP.MPD)
@@ -404,27 +403,27 @@ head(Br.res_s_F1, 10)
 #rm(HLD.Br_conds_dds, MP.Br_conds_dds, F1.Br_conds_dds, HLD.Go_conds_dds,  MP.Go_conds_dds, F1.Go_conds_dds, HLD.Li_conds_dds, MP.Li_conds_dds, F1.Li_conds_dds, keep)
 
 ### Save the significant genes 
-write.csv(as.data.frame(Br.res_s_HD), file = "Br_res_s_HD.csv")
-write.csv(as.data.frame(Br.res_s_LD), file = "Br_res_s_LD.csv")
-write.csv(as.data.frame(Br.res_s_HL), file = "Br_res_s_HL.csv")
-write.csv(as.data.frame(Br.res_s_MP.DMSO), file = "Br.res_s_MP.DMSO.csv")
-write.csv(as.data.frame(Br.res_s_MP.MPD), file = "Br.res_s_MP.MPD.csv")
-write.csv(as.data.frame(Br.res_s_MPD.DMSO), file = "Br.res_s_MPD.DMSO.csv")
-write.csv(as.data.frame(Br.res_s_F1), file = "Br.res_s_F1.csv")
+#write.csv(as.data.frame(Br.res_s_HD), file = "Br_res_s_HD.csv")
+#write.csv(as.data.frame(Br.res_s_LD), file = "Br_res_s_LD.csv")
+#write.csv(as.data.frame(Br.res_s_HL), file = "Br_res_s_HL.csv")
+#write.csv(as.data.frame(Br.res_s_MP.DMSO), file = "Br.res_s_MP.DMSO.csv")
+#write.csv(as.data.frame(Br.res_s_MP.MPD), file = "Br.res_s_MP.MPD.csv")
+#write.csv(as.data.frame(Br.res_s_MPD.DMSO), file = "Br.res_s_MPD.DMSO.csv")
+#write.csv(as.data.frame(Br.res_s_F1), file = "Br.res_s_F1.csv")
 
-write.csv(as.data.frame(Go.res_s_HD), file = "Go.res_s_HD.csv")
-write.csv(as.data.frame(Go.res_s_LD), file = "Go.res_s_LD.csv")
-write.csv(as.data.frame(Go.res_s_HL), file = "Go.res_s_HL.csv")
-write.csv(as.data.frame(Go.res_s_MP.DMSO), file = "Go.res_s_MP.DMSO.csv")
-write.csv(as.data.frame(Go.res_s_MP.MPD), file = "Go.res_s_MP.MPD.csv")
-write.csv(as.data.frame(Go.res_s_MPD.DMSO), file = "Go.res_s_MPD.DMSO.csv")
-write.csv(as.data.frame(Go.res_s_F1), file = "Go.res_s_F1.csv")
+#write.csv(as.data.frame(Go.res_s_HD), file = "Go.res_s_HD.csv")
+#write.csv(as.data.frame(Go.res_s_LD), file = "Go.res_s_LD.csv")
+#write.csv(as.data.frame(Go.res_s_HL), file = "Go.res_s_HL.csv")
+#write.csv(as.data.frame(Go.res_s_MP.DMSO), file = "Go.res_s_MP.DMSO.csv")
+#write.csv(as.data.frame(Go.res_s_MP.MPD), file = "Go.res_s_MP.MPD.csv")
+#write.csv(as.data.frame(Go.res_s_MPD.DMSO), file = "Go.res_s_MPD.DMSO.csv")
+#write.csv(as.data.frame(Go.res_s_F1), file = "Go.res_s_F1.csv")
 
-write.csv(as.data.frame(Li.res_s_HD), file = "Li.res_s_HD.csv")
-write.csv(as.data.frame(Li.res_s_LD), file = "Li.res_s_LD.csv")
-write.csv(as.data.frame(Li.res_s_HL), file = "Li.res_s_HL.csv")
-write.csv(as.data.frame(Li.res_s_MP.DMSO), file = "Li.res_s_MP.DMSO.csv")
-write.csv(as.data.frame(Li.res_s_MP.MPD), file = "Li.res_s_MP.MPD.csv")
-write.csv(as.data.frame(Li.res_s_MPD.DMSO), file = "Li.res_s_MPD.DMSO.csv")
-write.csv(as.data.frame(Li.res_s_F1), file = "Li.res_s_F1.csv")
+#write.csv(as.data.frame(Li.res_s_HD), file = "Li.res_s_HD.csv")
+#write.csv(as.data.frame(Li.res_s_LD), file = "Li.res_s_LD.csv")
+#write.csv(as.data.frame(Li.res_s_HL), file = "Li.res_s_HL.csv")
+#write.csv(as.data.frame(Li.res_s_MP.DMSO), file = "Li.res_s_MP.DMSO.csv")
+#write.csv(as.data.frame(Li.res_s_MP.MPD), file = "Li.res_s_MP.MPD.csv")
+#write.csv(as.data.frame(Li.res_s_MPD.DMSO), file = "Li.res_s_MPD.DMSO.csv")
+#write.csv(as.data.frame(Li.res_s_F1), file = "Li.res_s_F1.csv")
 

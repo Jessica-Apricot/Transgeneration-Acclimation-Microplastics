@@ -5,29 +5,6 @@ library(BiocManager)
 library(limma)
 library(Rsubread)
 
-# List all ZIP files in the current directory
-zip_files <- list.files(pattern = "\\.zip$")
-
-# Loop through and unzip each file
-for (file in zip_files) {
-  unzip(file)
-}
-
-
-# List all "summary.txt" files in subdirectories
-summary_files <- list.files(path = ".", pattern = "summary.txt$", recursive = TRUE, full.names = TRUE)
-
-# Read and concatenate all files
-summary_content <- sapply(summary_files, readLines, simplify = FALSE)
-
-# Flatten into a single vector
-summary_content <- unlist(summary_content)
-
-# Write to the output file
-writeLines(summary_content, "~/Microplastics_RNA-seq/Microplastics_Raw_data/fastq/Brain/QC/fastqc_summaries.txt")
-
-
-#######################################
 
 # Define your directories for each tissue type
 brain_dir <- "C:/Users/Jessi/Documents/Microplastics_RNA-seq/Microplastics_Raw_data/fastq/Brain/Hisat2"

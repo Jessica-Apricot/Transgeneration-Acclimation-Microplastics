@@ -5,3 +5,7 @@
 /Microplastics_Raw_data
 .gene_info.tsv
 /Genome
+/Brain_Counts.txt
+.Liver_counts.txt
+.Gonad_counts.txt
+/All_Counts.txt

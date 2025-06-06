@@ -1,11 +1,9 @@
 ## Goseq
 #BiocManager::install("goseq")
 #BiocManager::install("org.Dr.eg.db")
-BiocManager::install("topGO")
 library(goseq)
 library(dplyr)
 library(org.Dr.eg.db)
-library(topGO)
 #For now im going to use danRer6 as it has both gene length and go annotations, will revisit if need danRer11
 
 #We will do Brain F1, Gonad HLD, Gonad Microplastics, Gonad F1 and Liver HLD
@@ -66,13 +64,15 @@ length(GoHL_GO.sig)
 head(GoHL_GO.sig)
 View(GoHL_GO.sig)
 
-showSigOfNodes(GoHL_GO.sig, score(sigGenes), firstSigNodes = 5, useInfo = "all")
+
+
 #First 5 GO Terms
 #GO:0045202 - Synapse
 #GO:0030054 - Cell junction
 #GO:0007267 - cell - cell signalling
 #GO:0099537 - Trans synaptic signalling
 #GO:0005886 - plasma membrane
+
 
 ##### Gonad High-DMSO #####
 
@@ -96,13 +96,15 @@ sum(GoHD_GO.padj < 0.05)
 GoHD_GO.sig <- GoHD_GO$category[GoHD_GO.padj < 0.05]
 length(GoHD_GO.sig)
 head(GoHD_GO.sig)
+
 #282 significant GO terms
 
 #First 5 significant GO terms
 #GO:0045202 - Synapse
 #GO:0030054 - Cell Junction
 #GO:0043005 - Neuron Projection
-#
+#GO:0016020 - membrane
+#GO:0098794 - postsynapse
 
 #### Gonad Microplastics #####
 ##### Gonad MP vs MPD ######
@@ -123,11 +125,19 @@ hist(GoMP.MPD_pwf$pwf, 30)
 GoMP.MPD_GO <- goseq(GoMP.MPD_pwf, "danRer6", "geneSymbol")
 GoMP.MPD_GO.padj <- p.adjust(GoHD_GO$over_represented_pvalue, method = "fdr")
 sum(GoMP.MPD_GO.padj < 0.05)
+#282 significant GO terms
 
 GoMP.MPD_GO.sig <- GoMP.MPD_GO$category[GoMP.MPD_GO.padj < 0.05]
 length(GoMP.MPD_GO.sig)
 head(GoMP.MPD_GO.sig)
+head(GoMP.MPD_GO)
 
+#First Five significant genes
+#GO:0045202 - synapse
+#GO:0030054 - cell junction
+#GO:0007267 - cell-cell signaling
+#GO:0099537 - trans-synaptic signaling 
+#GO:0099536 - synaptic signaling
 
 ##### Gonad MP vs DMSO #####
 GoMP.DMSO_genes <- ifelse(Go.res_MP.DMSO$padj < 0.05, 1, 0)
@@ -146,10 +156,19 @@ hist(GoMP.DMSO_pwf$pwf, 30)
 GoMP.DMSO_GO <- goseq(GoMP.DMSO_pwf, "danRer6", "geneSymbol")
 GoMP.DMSO_GO.padj <- p.adjust(GoMP.DMSO_GO$over_represented_pvalue, method = "fdr")
 sum(GoMP.DMSO_GO.padj < 0.05)
+#43 significant GO terms
 
 GoMP.DMSO_GO.sig <- GoMP.DMSO_GO$category[GoMP.DMSO_GO.padj < 0.05]
 length(GoMP.DMSO_GO.sig)
 head(GoMP.DMSO_GO.sig)
+head(GoMP.DMSO_GO)
+
+#First five significant GO Terms
+#GO:0045202 - synapse
+#GO:0030054 - cell junction
+#GO:0023052 - signaling       
+#GO:0016020 - membrane
+#GO:0007154 - cell communication
 
 #### Gonad F1 #####
 
@@ -169,6 +188,7 @@ hist(GoF1_pwf$pwf, 30)
 GoF1_GO <- goseq(GoF1_pwf, "danRer6", "geneSymbol")
 GoF1_GO.padj <- p.adjust(GoF1_GO$over_represented_pvalue, method = "fdr")
 sum(GoF1_GO.padj < 0.05)
+#0 significant GO Terms
 
 #### Liver HLD ####
 ###### Liver Low-DMSO ####
@@ -189,6 +209,7 @@ hist(LiLD_pwf$pwf, 30)
 LiLD_GO <- goseq(LiLD_pwf, "danRer6", "geneSymbol")
 LiLD_GO.padj <- p.adjust(LiLD_GO$over_represented_pvalue, method = "fdr")
 sum(LiLD_GO.padj < 0.05)
+#0 significant GO terms
 
 
 
