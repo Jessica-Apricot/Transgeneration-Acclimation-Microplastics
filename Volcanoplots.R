@@ -4,6 +4,9 @@ library(ggplot2)
 library(ggiraph)
 #BiocManager::install("plotly")
 library(plotly)
+#install.packages("ggrepel")
+library(ggrepel)
+
 
 #Define significance thresholds
 pval_thres <- 0.05
@@ -165,12 +168,29 @@ volc_Br.MP.DMSO$category <- ifelse(Br.res_MP.DMSO$padj <= pval_thres,
                                          ifelse(volc_Br.MP.DMSO$logFC <= -fc_thres, "Downregulated", "Not Significant")),
                                   "Not Significant")
 
+#Labelling
+volc_Br.MP.DMSO$label <- ifelse(
+  volc_Br.MP.DMSO$category != "Not Significant" &
+    abs(volc_Br.MP.DMSO$logFC) > 1, volc_Br.MP.DMSO$ID,
+  NA)
+
+
 # Create the volcano plot using ggplot2
 ggplot(volc_Br.MP.DMSO, aes(x = logFC, y = negLogPval, color = category)) +
   geom_point(alpha = 0.6, size = 1.5) +
   scale_color_manual(values = c("Upregulated" = "red", "Downregulated" = "blue", "Not Significant" = "grey")) +
   geom_vline(xintercept = c(-fc_thres, fc_thres), linetype = "dashed") +
-  geom_hline(yintercept = -log10(pval_thres), linetype = "dashed") +
+  geom_hline(yintercept = -log10(pval_thres), linetype = "dashed")+
+  geom_text_repel(
+    data = subset(volc_Br.MP.DMSO, !is.na(label)),
+    aes(x = logFC, y = negLogPval, label = label),  # re-specify x and y
+    inherit.aes = FALSE,  # avoid pulling global aesthetics like color
+    size = 3,
+    max.overlaps = 20,
+    box.padding = 0.3,
+    point.padding = 0.2,
+    segment.color = 'grey50'
+  ) +
   labs(
     title = "Differential Gene Expression in Microplastics control vs DMSO in Brain",
     subtitle = paste("Thresholds: |log2FC| >", fc_thres, "and adjusted p-value <", pval_thres),
@@ -181,7 +201,7 @@ ggplot(volc_Br.MP.DMSO, aes(x = logFC, y = negLogPval, color = category)) +
   theme_minimal() +
   theme(
     legend.position = "right",
-    plot.title = element_text(hjust = 0.5, size = 16),
+    plot.title = element_text(hjust = 0.5, size = 13),
     plot.subtitle = element_text(hjust = 0.5, size = 12) )
 
 
@@ -217,7 +237,7 @@ ggplot(volc_Br.MPD.DMSO, aes(x = logFC, y = negLogPval, color = category)) +
   theme_minimal() +
   theme(
     legend.position = "right",
-    plot.title = element_text(hjust = 0.5, size = 16),
+    plot.title = element_text(hjust = 0.5, size = 13),
     plot.subtitle = element_text(hjust = 0.5, size = 12) )
 
 

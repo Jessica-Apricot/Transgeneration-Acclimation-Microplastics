@@ -34,6 +34,7 @@ Br_F1_GO <- goseq(BrF1_pwf, "danRer6", "geneSymbol")
 Br_F1_GO.padj <- p.adjust(Br_F1_GO$over_represented_pvalue, method = "fdr")
 sum(Br_F1_GO.padj < 0.05)
 # No significant GO terms, Not enough genes?
+View(Br_F1_GO.padj)
 
 
 #### Gonad HLD #####
@@ -63,8 +64,6 @@ GoHL_GO.sig <- GoHL_GO$category[GoHL_GO.padj < 0.05]
 length(GoHL_GO.sig)
 head(GoHL_GO.sig)
 View(GoHL_GO.sig)
-
-
 
 #First 5 GO Terms
 #GO:0045202 - Synapse
