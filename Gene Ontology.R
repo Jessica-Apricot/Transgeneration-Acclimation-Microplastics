@@ -21,11 +21,11 @@ names(BrainF1_genes) <- rownames(Br.res_F1)
 BrF1_valid_genes <- intersect(names(BrainF1_genes), names(length_vector))
 
 BrainF1_genes <- BrainF1_genes[BrF1_valid_genes]
-length_vector <- length_vector[BrF1_valid_genes]
+BrF1_length_vector <- length_vector[BrF1_valid_genes]
 
 
 #Calculate gene weights
-BrF1_pwf <- nullp(BrainF1_genes, bias.data = length_vector)
+BrF1_pwf <- nullp(BrainF1_genes, bias.data = BrF1_length_vector)
 par(mfrow=c(1,2))
 hist(BrF1_pwf$bias.data, 30)
 hist(BrF1_pwf$pwf, 30)
@@ -48,17 +48,17 @@ names(GoHL_genes) <- rownames(Go.res_HL)
 GoHL_valid_genes <- intersect(names(GoHL_genes), names(length_vector))
 
 GoHL_genes <- GoHL_genes[GoHL_valid_genes]
-length_vector <- length_vector[GoHL_valid_genes]
+GOHL_length_vector <- length_vector[GoHL_valid_genes]
 
 #Calculate gene weight values
-GoHL_pwf <- nullp(GoHL_genes, bias.data = length_vector)
+GoHL_pwf <- nullp(GoHL_genes, bias.data = GOHL_length_vector)
 hist(GoHL_pwf$bias.data, 30)
 hist(GoHL_pwf$pwf, 30)
 
 GoHL_GO <- goseq(GoHL_pwf, "danRer6", "geneSymbol")
 GoHL_GO.padj <- p.adjust(GoHL_GO$over_represented_pvalue, method = "fdr")
 sum(GoHL_GO.padj < 0.05)
-#257 significant GO terms
+#225 significant GO terms
 
 GoHL_GO.sig <- GoHL_GO$category[GoHL_GO.padj < 0.05]
 length(GoHL_GO.sig)
@@ -68,9 +68,8 @@ View(GoHL_GO.sig)
 #First 5 GO Terms
 #GO:0045202 - Synapse
 #GO:0030054 - Cell junction
-#GO:0007267 - cell - cell signalling
 #GO:0099537 - Trans synaptic signalling
-#GO:0005886 - plasma membrane
+
 
 
 ##### Gonad High-DMSO #####
@@ -81,10 +80,10 @@ names(GoHD_genes) <- rownames(Go.res_HD)
 GoHD_valid_genes <- intersect(names(GoHD_genes), names(length_vector))
 
 GoHD_genes <- GoHD_genes[GoHD_valid_genes]
-length_vector <- length_vector[GoHD_valid_genes]
+GoHD_length_vector <- length_vector[GoHD_valid_genes]
 
 #Calculate gene weight values
-GoHD_pwf <- nullp(GoHD_genes, bias.data = length_vector)
+GoHD_pwf <- nullp(GoHD_genes, bias.data = GoHD_length_vector)
 hist(GoHD_pwf$bias.data, 30)
 hist(GoHD_pwf$pwf, 30)
 
@@ -96,14 +95,8 @@ GoHD_GO.sig <- GoHD_GO$category[GoHD_GO.padj < 0.05]
 length(GoHD_GO.sig)
 head(GoHD_GO.sig)
 
-#282 significant GO terms
+#278 significant GO terms
 
-#First 5 significant GO terms
-#GO:0045202 - Synapse
-#GO:0030054 - Cell Junction
-#GO:0043005 - Neuron Projection
-#GO:0016020 - membrane
-#GO:0098794 - postsynapse
 
 #### Gonad Microplastics #####
 ##### Gonad MP vs MPD ######
@@ -114,17 +107,17 @@ names(GoMP.MPD_genes) <- rownames(Go.res_MP.MPD)
 GoMP.MPD_valid_genes <- intersect(names(GoMP.MPD_genes), names(length_vector))
 
 GoMP.MPD_genes <- GoMP.MPD_genes[GoMP.MPD_valid_genes]
-length_vector <- length_vector[GoMP.MPD_valid_genes]
+GoMP.MPD_length_vector <- length_vector[GoMP.MPD_valid_genes]
 
 #Calculate gene weight values
-GoMP.MPD_pwf <- nullp(GoMP.MPD_genes, bias.data = length_vector)
+GoMP.MPD_pwf <- nullp(GoMP.MPD_genes, bias.data = GoMP.MPD_length_vector)
 hist(GoMP.MPD_pwf$bias.data, 30)
 hist(GoMP.MPD_pwf$pwf, 30)
 
 GoMP.MPD_GO <- goseq(GoMP.MPD_pwf, "danRer6", "geneSymbol")
 GoMP.MPD_GO.padj <- p.adjust(GoHD_GO$over_represented_pvalue, method = "fdr")
 sum(GoMP.MPD_GO.padj < 0.05)
-#282 significant GO terms
+#278 significant GO terms
 
 GoMP.MPD_GO.sig <- GoMP.MPD_GO$category[GoMP.MPD_GO.padj < 0.05]
 length(GoMP.MPD_GO.sig)
@@ -145,17 +138,17 @@ names(GoMP.DMSO_genes) <- rownames(Go.res_MP.DMSO)
 GoMP.DMSO_valid_genes <- intersect(names(GoMP.DMSO_genes), names(length_vector))
 
 GoMP.DMSO_genes <- GoMP.DMSO_genes[GoMP.DMSO_valid_genes]
-length_vector <- length_vector[GoMP.DMSO_valid_genes]
+GoMP.DMSO_length_vector <- length_vector[GoMP.DMSO_valid_genes]
 
 #Calculate gene weight values
-GoMP.DMSO_pwf <- nullp(GoMP.DMSO_genes, bias.data = length_vector)
+GoMP.DMSO_pwf <- nullp(GoMP.DMSO_genes, bias.data = GoMP.DMSO_length_vector)
 hist(GoMP.DMSO_pwf$bias.data, 30)
 hist(GoMP.DMSO_pwf$pwf, 30)
 
 GoMP.DMSO_GO <- goseq(GoMP.DMSO_pwf, "danRer6", "geneSymbol")
 GoMP.DMSO_GO.padj <- p.adjust(GoMP.DMSO_GO$over_represented_pvalue, method = "fdr")
 sum(GoMP.DMSO_GO.padj < 0.05)
-#43 significant GO terms
+#57 significant GO terms
 
 GoMP.DMSO_GO.sig <- GoMP.DMSO_GO$category[GoMP.DMSO_GO.padj < 0.05]
 length(GoMP.DMSO_GO.sig)
@@ -177,10 +170,10 @@ names(GoF1_genes) <- rownames(Go.res_F1)
 GoF1_valid_genes <- intersect(names(GoF1_genes), names(length_vector))
 
 GoF1_genes <- GoF1_genes[GoF1_valid_genes]
-length_vector <- length_vector[GoF1_valid_genes]
+GoF1_length_vector <- length_vector[GoF1_valid_genes]
 
 #Calculate gene weight values
-GoF1_pwf <- nullp(GoF1_genes, bias.data = length_vector)
+GoF1_pwf <- nullp(GoF1_genes, bias.data = GoF1_length_vector)
 hist(GoF1_pwf$bias.data, 30)
 hist(GoF1_pwf$pwf, 30)
 
@@ -198,10 +191,10 @@ names(LiLD_genes) <- rownames(Li.res_LD)
 LiLD_valid_genes <- intersect(names(LiLD_genes), names(length_vector))
 
 LiLD_genes <- LiLD_genes[LiLD_valid_genes]
-length_vector <- length_vector[LiLD_valid_genes]
+LiLD_length_vector <- length_vector[LiLD_valid_genes]
 
 #Calculate gene weight values
-LiLD_pwf <- nullp(LiLD_genes, bias.data = length_vector)
+LiLD_pwf <- nullp(LiLD_genes, bias.data = LiLD_length_vector)
 hist(LiLD_pwf$bias.data, 30)
 hist(LiLD_pwf$pwf, 30)
 
