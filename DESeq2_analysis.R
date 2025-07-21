@@ -99,11 +99,17 @@ Br.res_HL <- na.omit(Br.res_HL)
 Br.res_HD <- na.omit(Br.res_HD)
 Br.res_LD <- na.omit(Br.res_LD)
 #significant p-values
-Br.res_s_HL <- Br.res_HL[Br.res_HL$padj <= 0.05 ,]
+Br.res_s_HL <- Br.res_HL[
+  Br.res_HL$padj <= 0.05 & 
+    (Br.res_HL$log2FoldChange > 1 | Br.res_HL$log2FoldChange < -1), ]
 dim(Br.res_s_HL) #0 significant
-Br.res_s_HD <- Br.res_HD[Br.res_HD$padj <= 0.05 ,]
+Br.res_s_HD <- Br.res_HD[
+  Br.res_HD$padj <= 0.05 & 
+    (Br.res_HD$log2FoldChange > 1 | Br.res_HD$log2FoldChange < -1), ]
 dim(Br.res_s_HD) #1 significant
-Br.res_s_LD <- Br.res_LD[Br.res_LD$padj <= 0.05 ,]
+Br.res_s_LD <- Br.res_LD[
+  Br.res_LD$padj <= 0.05 & 
+    (Br.res_LD$log2FoldChange > 1 | Br.res_LD$log2FoldChange < -1), ]
 dim(Br.res_s_LD) # 1 significant
 
 #PCA
@@ -139,11 +145,11 @@ Br.res_MP.MPD <- na.omit(Br.res_MP.MPD)
 Br.res_MP.DMSO <- na.omit(Br.res_MP.DMSO)
 Br.res_MPD.DMSO <- na.omit(Br.res_MPD.DMSO)
 #Significant p-values
-Br.res_s_MP.MPD <- Br.res_MP.MPD[Br.res_MP.MPD$padj <= 0.05 ,]
+Br.res_s_MP.MPD <- Br.res_MP.MPD[Br.res_MP.MPD$padj <= 0.05 & (Br.res_MP.MPD$log2FoldChange > 1 | Br.res_MP.MPD$log2FoldChange < -1), ]
 dim(Br.res_s_MP.MPD) #0 significant genes
-Br.res_s_MP.DMSO <-Br.res_MP.DMSO[Br.res_MP.DMSO$padj <= 0.05 ,]
+Br.res_s_MP.DMSO <- Br.res_MP.DMSO[Br.res_MP.DMSO$padj <= 0.05 & (Br.res_MP.DMSO$log2FoldChange > 1 | Br.res_MP.DMSO$log2FoldChange < -1), ]
 dim(Br.res_s_MP.DMSO) #2 significant genes
-Br.res_s_MPD.DMSO <- Br.res_MPD.DMSO[Br.res_MPD.DMSO$padj <= 0.05 ,]
+Br.res_s_MPD.DMSO <- Br.res_MPD.DMSO[Br.res_MPD.DMSO$padj <= 0.05 & (Br.res_MPD.DMSO$log2FoldChange >1 | Br.res_MPD.DMSO$log2FoldChange < -1), ]
 dim(Br.res_s_MPD.DMSO) # 3 significant gene
 
 #PCA
@@ -170,8 +176,12 @@ Br.res_F1 <- results(F1.Br_conds_dds, contrast = c("conds", "High", "DMSO"))
 #remove na values
 Br.res_F1 <- na.omit(Br.res_F1)
 #Significant p-values
-Br.res_s_F1 <- Br.res_F1[Br.res_F1$padj <= 0.05 ,]
-dim(Br.res_s_F1) #106 significant genes
+Br.res_s_F1 <- Br.res_F1[
+  Br.res_F1$padj <= 0.05 & 
+    (Br.res_F1$log2FoldChange > 1 | Br.res_F1$log2FoldChange < -1), 
+]
+dim(Br.res_s_F1) #59 significant genes
+#106 genes with a p-value less than 0.05
 
 #PCA
 plotPCA(rlog(F1.Br_conds_dds, blind=TRUE), intgroup="conds")
@@ -204,12 +214,15 @@ Go.res_HL <- na.omit(Go.res_HL)
 Go.res_HD <- na.omit(Go.res_HD)
 Go.res_LD <- na.omit(Go.res_LD)
 #Significant p-values
-Go.res_s_HL <- Go.res_HL[Go.res_HL$padj <= 0.05 ,]
-dim(Go.res_s_HL) #5032 significant genes
-Go.res_s_HD <-Go.res_HD[Go.res_HD$padj <= 0.05 ,]
-dim(Go.res_s_HD) #5184 significant genes
-Go.res_s_LD <- Go.res_LD[Go.res_LD$padj <= 0.05 ,]
-dim(Go.res_s_LD) # 3 significant gene
+Go.res_s_HL <- Go.res_HL[Go.res_HL$padj <= 0.05 & (Go.res_HL$log2FoldChange > 1 | Go.res_HL$log2FoldChange < -1),]
+dim(Go.res_s_HL) #4507 significant genes
+#5032 genes with a p-value less than 0.05
+Go.res_s_HD <- Go.res_HD[Go.res_HD$padj <= 0.05 & (Go.res_HD$log2FoldChange > 1 | Go.res_HD$log2FoldChange < -1),]
+dim(Go.res_s_HD) #4820 significant genes
+#5184 genes with a p-value less than 0.05
+Go.res_s_LD <- Go.res_LD[Go.res_LD$padj <= 0.05 & (Go.res_LD$log2FoldChange >1 | Go.res_LD$log2FoldChange < -1),]
+dim(Go.res_s_LD) # 2 significant gene
+# 3 genes with a p-value above 0.05
 
 #PCA
 plotPCA(rlog(HLD.Go_conds_dds, blind=TRUE), intgroup="conds")
@@ -243,12 +256,14 @@ Go.res_MP.MPD <- na.omit(Go.res_MP.MPD)
 Go.res_MP.DMSO <- na.omit(Go.res_MP.DMSO)
 Go.res_MPD.DMSO <- na.omit(Go.res_MPD.DMSO)
 #Significant p-values
-Go.res_s_MP.MPD <- Go.res_MP.MPD[Go.res_MP.MPD$padj <= 0.05 ,]
-dim(Go.res_s_MP.MPD) #1517 significant genes
-Go.res_s_MP.DMSO <-Go.res_MP.DMSO[Go.res_MP.DMSO$padj <= 0.05 ,]
-dim(Go.res_s_MP.DMSO) #5758 significant genes
-Go.res_s_MPD.DMSO <- Go.res_MPD.DMSO[Go.res_MPD.DMSO$padj <= 0.05 ,]
-dim(Go.res_s_MPD.DMSO) # 9 significant gene
+Go.res_s_MP.MPD <- Go.res_MP.MPD[Go.res_MP.MPD$padj <= 0.05 & (Go.res_MP.MPD$log2FoldChange > 1 | Go.res_MP.MPD$log2FoldChange < -1),]
+dim(Go.res_s_MP.MPD) #1478 significant genes
+#1517 genes with a p-value less than 0.05
+Go.res_s_MP.DMSO <-Go.res_MP.DMSO[Go.res_MP.DMSO$padj <= 0.05 & (Go.res_MP.DMSO$log2FoldChange >1 | Go.res_MP.DMSO$log2FoldChange < -1), ]
+dim(Go.res_s_MP.DMSO) #5388 significant genes
+#5758 genes with a p-value less than 0.05
+Go.res_s_MPD.DMSO <- Go.res_MPD.DMSO[Go.res_MPD.DMSO$padj <= 0.05 & (Go.res_MPD.DMSO$log2FoldChange > 1| Go.res_MPD.DMSO$log2FoldChange < -1), ]
+dim(Go.res_s_MPD.DMSO) # 9 significant genes
 
 #PCA
 plotPCA(rlog(MP.Go_conds_dds, blind=TRUE), intgroup="conds")
@@ -276,8 +291,10 @@ Go.res_F1 <- results(F1.Go_conds_dds, contrast = c("conds", "High", "DMSO"))
 #remove na values
 Go.res_F1 <- na.omit(Go.res_F1)
 #Significant p-values
-Go.res_s_F1 <- Go.res_F1[Go.res_F1$padj <= 0.05 ,]
-dim(Go.res_s_F1) #71 significant genes
+Go.res_s_F1 <- Go.res_F1[Go.res_F1$padj <= 0.05 & (Go.res_F1$log2FoldChange > 1 | Go.res_F1$log2FoldChange < -1), ]
+dim(Go.res_s_F1) #60 significant genes
+#71 genes with a p-value less than 0.05
+
 
 #PCA
 plotPCA(rlog(F1.Go_conds_dds, blind=TRUE), intgroup="conds")
@@ -310,12 +327,13 @@ Li.res_HL <- na.omit(Li.res_HL)
 Li.res_HD <- na.omit(Li.res_HD)
 Li.res_LD <- na.omit(Li.res_LD)
 #Significant p-values
-Li.res_s_HL <- Li.res_HL[Li.res_HL$padj <= 0.05 ,]
+Li.res_s_HL <- Li.res_HL[Li.res_HL$padj <= 0.05 & (Li.res_HL$log2FoldChange > 1 | Li.res_HL$log2FoldChange < -1), ]
 dim(Li.res_s_HL) #4 significant genes
-Li.res_s_HD <-Li.res_HD[Li.res_HD$padj <= 0.05 ,]
+Li.res_s_HD <-Li.res_HD[Li.res_HD$padj <= 0.05 & (Li.res_HD$log2FoldChange > 1 | Li.res_HD$log2FoldChange < -1), ]
 dim(Li.res_s_HD) #2 significant genes
-Li.res_s_LD <- Li.res_LD[Li.res_LD$padj <= 0.05 ,]
-dim(Li.res_s_LD) # 415 significant gene
+Li.res_s_LD <- Li.res_LD[Li.res_LD$padj <= 0.05 & (Li.res_LD$log2FoldChange > 1 | Li.res_LD$log2FoldChange < -1), ]
+dim(Li.res_s_LD) #414 significant genes
+# 415 genes with a p-value less than 0.05
 
 #PCA
 plotPCA(rlog(HLD.Li_conds_dds, blind=TRUE), intgroup="conds")
@@ -348,11 +366,11 @@ Li.res_MP.MPD <- na.omit(Li.res_MP.MPD)
 Li.res_MP.DMSO <- na.omit(Li.res_MP.DMSO)
 Li.res_MPD.DMSO <- na.omit(Li.res_MPD.DMSO)
 #Significant p-values
-Li.res_s_MP.MPD <- Li.res_MP.MPD[Li.res_MP.MPD$padj <= 0.05 ,]
+Li.res_s_MP.MPD <- Li.res_MP.MPD[Li.res_MP.MPD$padj <= 0.05 & (Li.res_MP.MPD$log2FoldChange > 1 | Li.res_MP.MPD$log2FoldChange < -1), ]
 dim(Li.res_s_MP.MPD) #0 significant genes
-Li.res_s_MP.DMSO <-Li.res_MP.DMSO[Li.res_MP.DMSO$padj <= 0.05 ,]
+Li.res_s_MP.DMSO <-Li.res_MP.DMSO[Li.res_MP.DMSO$padj <= 0.05 & (Li.res_MP.DMSO$log2FoldChange > 1 | Li.res_MP.DMSO$log2FoldChange < -1), ]
 dim(Li.res_s_MP.DMSO) #0 significant genes
-Li.res_s_MPD.DMSO <- Li.res_MPD.DMSO[Li.res_MPD.DMSO$padj <= 0.05 ,]
+Li.res_s_MPD.DMSO <- Li.res_MPD.DMSO[Li.res_MPD.DMSO$padj <= 0.05 & (Li.res_MPD.DMSO$log2FoldChange >1 | Li.res_MPD.DMSO$log2FoldChange < -1), ]
 dim(Li.res_s_MPD.DMSO) # 0 significant gene
 
 #PCA
@@ -380,7 +398,7 @@ Li.res_F1 <- results(F1.Li_conds_dds, contrast = c("conds", "High", "DMSO"))
 #remove na values
 Li.res_F1 <- na.omit(Li.res_F1)
 #Significant p-values
-Li.res_s_F1 <- Li.res_F1[Li.res_F1$padj <= 0.05 ,]
+Li.res_s_F1 <- Li.res_F1[Li.res_F1$padj <= 0.05 & (Li.res_F1$log2FoldChange > 1 | Li.res_F1$log2FoldChange < -1), ]
 dim(Li.res_s_F1) #52 significant genes
 
 #PCA
@@ -455,3 +473,4 @@ write.csv(as.data.frame(Li.res_MP.DMSO), file = "All genes/Li.res_MP.DMSO.csv")
 write.csv(as.data.frame(Li.res_MP.MPD), file = "All genes/Li.res_MP.MPD.csv")
 write.csv(as.data.frame(Li.res_MPD.DMSO), file = "All genes/Li.res_MPD.DMSO.csv")
 write.csv(as.data.frame(Li.res_F1), file = "All genes/Li.res_F1.csv")
+

@@ -65,6 +65,11 @@ length(GoHL_GO.sig)
 head(GoHL_GO.sig)
 View(GoHL_GO.sig)
 
+GoHL_GO.df <- data.frame(GO_ID = GoHL_GO$category[GoHL_GO.padj < 0.05],
+                         padj = GoHL_GO.padj[GoHL_GO.padj < 0.05])
+write.table(GoHL_GO.df, file = "GoHL_GO_sig_with_padj.txt", quote = FALSE, row.names = FALSE, sep = "\t")
+
+
 #First 5 GO Terms
 #GO:0045202 - Synapse
 #GO:0030054 - Cell junction

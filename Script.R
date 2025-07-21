@@ -94,6 +94,13 @@ logBrain = log2(as.matrix(Brain_Counts) + 0.5)
 boxplot(as.matrix(logBrain) ~ col(Brain_Counts), las=3, cex.axis = 0.4,
         ylab = "Counts", xlab = "Samples", names = colnames(Brain_Counts), main = "Log counts of Brain samples")
 
+range(colSums(Brain_Counts) / 1e6, na.rm = TRUE)
+
+#How many genes had greater than zero expression in our brain samples
+
+zero_B <- rownames(Brain_Counts)[rowSums(Brain_Counts == 0) == ncol(Brain_Counts)]
+length(zero_B)
+
 #Gonad Graphs
 colSums(Gonad_Counts)
 colSums(Gonad_Counts) %>% barplot(., las = 3, ylab = "Reads Mapped Per Sample", cex.names = 0.7, main = "Gonad Samples")
@@ -102,6 +109,11 @@ logGonad = log2(as.matrix(Gonad_Counts) + 0.5)
 boxplot(as.matrix(logGonad) ~ col(Gonad_Counts), las=3, cex.axis = 0.4,
         ylab = "Counts", xlab = "Samples", names = colnames(Gonad_Counts), main = "Log counts of Gonad samples")
 
+range(colSums(Gonad_Counts) / 1e6, na.rm = TRUE)
+
+zero_G <- rownames(Gonad_Counts)[rowSums(Gonad_Counts == 0) == ncol(Gonad_Counts)]
+length(zero_G)
+
 #Liver Graphs
 colSums(Liver_Counts)
 colSums(Liver_Counts) %>% barplot(., las = 3, ylab = "Reads Mapped Per Sample", cex.names = 0.7, main = "Liver Samples")
@@ -109,3 +121,8 @@ colSums(Liver_Counts) %>% barplot(., las = 3, ylab = "Reads Mapped Per Sample", 
 logLiver = log2(as.matrix(Liver_Counts) + 0.5)
 boxplot(as.matrix(logLiver) ~ col(Liver_Counts), las=3, cex.axis = 0.4,
         ylab = "Counts", xlab = "Samples", names = colnames(Liver_Counts), main = "Log counts of Liver samples")
+
+range(colSums(Liver_Counts) / 1e6, na.rm = TRUE)
+
+zero_L <- rownames(Liver_Counts)[rowSums(Liver_Counts == 0) == ncol(Liver_Counts)]
+length(zero_L)

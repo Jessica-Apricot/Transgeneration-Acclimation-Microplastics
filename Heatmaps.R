@@ -178,3 +178,13 @@ sc_logLiF1 <- t(scale(t(logLiF1)))
 sc_logLiF1[sc_logLiF1 > 3] <- 3
 sc_logLiF1[sc_logLiF1 < -3] <- -3
 heatmap.2(sc_logLiF1, trace ='none', scale = 'none', col=bluered(50), labRow = "", labCol = colnames(sc_logLiF1), cexRow = 0.7, cexCol = 0.7, breaks = seq(-3,3, l=51))
+
+
+#Save
+saveRDS(MP.Br_conds_dds, file = "DDS objects/MP.Br_conds_dds.rds")
+saveRDS(F1.Br_conds_dds, file = "DDS objects/F1.Br_conds_dds.rds")
+saveRDS(HLD.Go_conds_dds, file = "DDS objects/HLD.Go_conds_dds.rds")
+saveRDS(MP.Go_conds_dds, file = "DDS objects/MP.Go_conds_dds.rds")
+saveRDS(F1.Go_conds_dds, file = "DDS objects/F1.Go_conds_dds.rds")
+saveRDS(HLD.Li_conds_dds, file = "DDS objects/HLD.Li_conds_dds.rds")
+saveRDS(F1.Li_conds_dds, file = "DDS objects/F1.Li_conds_dds.rds")
