@@ -111,6 +111,7 @@ Br.res_s_LD <- Br.res_LD[
   Br.res_LD$padj <= 0.05 & 
     (Br.res_LD$log2FoldChange > 1 | Br.res_LD$log2FoldChange < -1), ]
 dim(Br.res_s_LD) # 1 significant
+Br.res_s_LD
 
 #PCA
 plotPCA(rlog(HLD.Br_conds_dds, blind=TRUE), intgroup="conds")
@@ -149,8 +150,10 @@ Br.res_s_MP.MPD <- Br.res_MP.MPD[Br.res_MP.MPD$padj <= 0.05 & (Br.res_MP.MPD$log
 dim(Br.res_s_MP.MPD) #0 significant genes
 Br.res_s_MP.DMSO <- Br.res_MP.DMSO[Br.res_MP.DMSO$padj <= 0.05 & (Br.res_MP.DMSO$log2FoldChange > 1 | Br.res_MP.DMSO$log2FoldChange < -1), ]
 dim(Br.res_s_MP.DMSO) #2 significant genes
+Br.res_s_MP.DMSO
 Br.res_s_MPD.DMSO <- Br.res_MPD.DMSO[Br.res_MPD.DMSO$padj <= 0.05 & (Br.res_MPD.DMSO$log2FoldChange >1 | Br.res_MPD.DMSO$log2FoldChange < -1), ]
 dim(Br.res_s_MPD.DMSO) # 3 significant gene
+Br.res_s_MPD.DMSO
 
 #PCA
 plotPCA(rlog(MP.Br_conds_dds, blind=TRUE), intgroup="conds")
@@ -264,6 +267,7 @@ dim(Go.res_s_MP.DMSO) #5388 significant genes
 #5758 genes with a p-value less than 0.05
 Go.res_s_MPD.DMSO <- Go.res_MPD.DMSO[Go.res_MPD.DMSO$padj <= 0.05 & (Go.res_MPD.DMSO$log2FoldChange > 1| Go.res_MPD.DMSO$log2FoldChange < -1), ]
 dim(Go.res_s_MPD.DMSO) # 9 significant genes
+Go.res_s_MPD.DMSO
 
 #PCA
 plotPCA(rlog(MP.Go_conds_dds, blind=TRUE), intgroup="conds")
@@ -474,3 +478,14 @@ write.csv(as.data.frame(Li.res_MP.MPD), file = "All genes/Li.res_MP.MPD.csv")
 write.csv(as.data.frame(Li.res_MPD.DMSO), file = "All genes/Li.res_MPD.DMSO.csv")
 write.csv(as.data.frame(Li.res_F1), file = "All genes/Li.res_F1.csv")
 
+#UGH
+
+write.table(rownames(Br.res_F1), file = "All genes text/Br.res_F1.txt",quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+write.table(rownames(Go.res_HD), file = "All genes text/Go.res_HD.txt",quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+write.table(rownames(Go.res_F1), file = "All genes text/Go.res_F1.txt",quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+write.table(rownames(Li.res_LD), file = "All genes text/Li.res_LD.txt",quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+write.table(rownames(Go.res_MP.DMSO), file = "All genes text/Go.res_MP.DMSO.txt",quote = FALSE, row.names = FALSE, col.names = FALSE)
