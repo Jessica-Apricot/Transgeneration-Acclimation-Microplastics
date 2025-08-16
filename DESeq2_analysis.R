@@ -107,6 +107,7 @@ Br.res_s_HD <- Br.res_HD[
   Br.res_HD$padj <= 0.05 & 
     (Br.res_HD$log2FoldChange > 1 | Br.res_HD$log2FoldChange < -1), ]
 dim(Br.res_s_HD) #1 significant
+Br.res_s_HD
 Br.res_s_LD <- Br.res_LD[
   Br.res_LD$padj <= 0.05 & 
     (Br.res_LD$log2FoldChange > 1 | Br.res_LD$log2FoldChange < -1), ]
@@ -185,6 +186,8 @@ Br.res_s_F1 <- Br.res_F1[
 ]
 dim(Br.res_s_F1) #59 significant genes
 #106 genes with a p-value less than 0.05
+as.data.frame(tail(Br.res_s_F1, 50))
+
 
 #PCA
 plotPCA(rlog(F1.Br_conds_dds, blind=TRUE), intgroup="conds")
@@ -225,6 +228,7 @@ dim(Go.res_s_HD) #4820 significant genes
 #5184 genes with a p-value less than 0.05
 Go.res_s_LD <- Go.res_LD[Go.res_LD$padj <= 0.05 & (Go.res_LD$log2FoldChange >1 | Go.res_LD$log2FoldChange < -1),]
 dim(Go.res_s_LD) # 2 significant gene
+Go.res_s_LD
 # 3 genes with a p-value above 0.05
 
 #PCA
@@ -335,9 +339,11 @@ Li.res_s_HL <- Li.res_HL[Li.res_HL$padj <= 0.05 & (Li.res_HL$log2FoldChange > 1 
 dim(Li.res_s_HL) #4 significant genes
 Li.res_s_HD <-Li.res_HD[Li.res_HD$padj <= 0.05 & (Li.res_HD$log2FoldChange > 1 | Li.res_HD$log2FoldChange < -1), ]
 dim(Li.res_s_HD) #2 significant genes
+Li.res_s_HD
 Li.res_s_LD <- Li.res_LD[Li.res_LD$padj <= 0.05 & (Li.res_LD$log2FoldChange > 1 | Li.res_LD$log2FoldChange < -1), ]
 dim(Li.res_s_LD) #414 significant genes
 # 415 genes with a p-value less than 0.05
+
 
 #PCA
 plotPCA(rlog(HLD.Li_conds_dds, blind=TRUE), intgroup="conds")

@@ -1,12 +1,13 @@
 #Volcano plots
+#install.packages(c("systemfonts", "ragg","ggrepel", "plotly", "ggiraph"))
 library(ggplot2)
-#BiocManager::install("ggiraph")
 library(ggiraph)
-#BiocManager::install("plotly")
 library(plotly)
-#install.packages("ggrepel")
 library(ggrepel)
+library(systemfonts)
+library(ragg)
 
+#install.packages(c("ggplot2", "grDevices", "Cairo"))
 
 #Define significance thresholds
 pval_thres <- 0.05
@@ -128,7 +129,6 @@ volc_Br.MP.MPD <- data.frame(
   adj.P.Val = Br.res_MP.MPD$padj,
   ID = rownames(Br.res_MP.MPD))
 
-#Column to catagorise genes, if above fc threshold labelled upregulated (greater than 1), if below threshold (-1), downregulated
 volc_Br.MP.MPD$category <- ifelse(Br.res_MP.MPD$padj <= pval_thres,
                               ifelse(volc_Br.MP.MPD$logFC >= fc_thres, "Upregulated", 
                                      ifelse(volc_Br.MP.MPD$logFC <= -fc_thres, "Downregulated", "Not Significant")),
@@ -150,7 +150,7 @@ ggplot(volc_Br.MP.MPD, aes(x = logFC, y = negLogPval, color = category)) +
   theme_minimal() +
   theme(
     legend.position = "right",
-    plot.title = element_text(hjust = 0.5, size = 16),
+    plot.title = element_text(hjust = 0.5, size = 14),
     plot.subtitle = element_text(hjust = 0.5, size = 12) )
 
 
@@ -249,15 +249,23 @@ volc_Br.F1 <- data.frame(
   adj.P.Val = Br.res_F1$padj,
   ID = rownames(Br.res_F1))
 
-#Column to catagorise genes, if above fc threshold labelled upregulated (greater than 1), if below threshold (-1), downregulated
-volc_Br.F1$category <- ifelse(Br.res_F1$padj <= pval_thres,
-                                   ifelse(volc_Br.F1$logFC >= fc_thres, "Upregulated", 
-                                          ifelse(volc_Br.F1$logFC <= -fc_thres, "Downregulated", "Not Significant")),
-                                   "Not Significant")
 
-# Create the volcano plot using ggplot2
+volc_Br.F1$category <- ifelse(Br.res_F1$padj <= pval_thres,
+                              ifelse(volc_Br.F1$logFC >= fc_thres, "Upregulated", 
+                                     ifelse(volc_Br.F1$logFC <= -fc_thres, "Downregulated", "Not Significant")),
+                              "Not Significant")
+
+
+top_n <- 10
+BrF1_sig <- volc_Br.F1[
+  abs(volc_Br.F1$logFC) > fc_thres & volc_Br.F1$adj.P.Val < pval_thres,
+]
+BrF1_top <- BrF1_sig[order(-abs(BrF1_sig$logFC)), ][1:min(top_n, nrow(BrF1_sig)), ]
+
+# Volcano plot
 ggplot(volc_Br.F1, aes(x = logFC, y = negLogPval, color = category)) +
   geom_point(alpha = 0.6, size = 1.5) +
+  geom_text_repel(data = BrF1_top, aes(label = ID), size = 3, max.overlaps = Inf) +
   scale_color_manual(values = c("Upregulated" = "red", "Downregulated" = "blue", "Not Significant" = "grey")) +
   geom_vline(xintercept = c(-fc_thres, fc_thres), linetype = "dashed") +
   geom_hline(yintercept = -log10(pval_thres), linetype = "dashed") +
@@ -268,11 +276,17 @@ ggplot(volc_Br.F1, aes(x = logFC, y = negLogPval, color = category)) +
     y = "-log10(p-value)",
     color = "Differential Expression"
   ) +
+  scale_x_continuous(
+    breaks = seq(-6, 6, by = 1) 
+  ) +
   theme_minimal() +
   theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
     legend.position = "right",
-    plot.title = element_text(hjust = 0.5, size = 16),
-    plot.subtitle = element_text(hjust = 0.5, size = 12) )
+    plot.title = element_blank(),
+    plot.subtitle = element_blank()
+  )
 
 
 ### Gonad High-Low ####
@@ -305,7 +319,7 @@ ggplot(volc_Go.HL, aes(x = logFC, y = negLogPval, color = category)) +
   theme_minimal() +
   theme(
     legend.position = "right",
-    plot.title = element_text(hjust = 0.5, size = 16),
+    plot.title = element_text(hjust = 0.5, size = 14),
     plot.subtitle = element_text(hjust = 0.5, size = 12)
   )
 
@@ -316,6 +330,7 @@ volc_Go.HD <- data.frame(
   negLogPval = -log10(Go.res_HD$padj),
   adj.P.Val = Go.res_HD$padj,
   ID = rownames(Go.res_HD))
+
 
 #Column to catagorise genes, if above fc threshold labelled upregulated (greater than 1), if below threshold (-1), downregulated
 volc_Go.HD$category <- ifelse(Go.res_HD$padj <= pval_thres,
@@ -338,9 +353,11 @@ ggplot(volc_Go.HD, aes(x = logFC, y = negLogPval, color = category)) +
   ) +
   theme_minimal() +
   theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
     legend.position = "right",
-    plot.title = element_text(hjust = 0.5, size = 16),
-    plot.subtitle = element_text(hjust = 0.5, size = 12)
+    plot.title = element_blank(),
+    plot.subtitle = element_blank()
   )
 
 ### Gonad Low-DMSO ####
@@ -439,9 +456,11 @@ ggplot(volc_Go.MP.DMSO, aes(x = logFC, y = negLogPval, color = category)) +
   ) +
   theme_minimal() +
   theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
     legend.position = "right",
-    plot.title = element_text(hjust = 0.5, size = 16),
-    plot.subtitle = element_text(hjust = 0.5, size = 12)
+    plot.title = element_blank(),
+    plot.subtitle = element_blank()
   )
 
 
@@ -485,14 +504,23 @@ volc_Go.F1 <- data.frame(
   adj.P.Val = Go.res_F1$padj,
   ID = rownames(Go.res_F1))
 
+
 #Column to catagorise genes, if above fc threshold labelled upregulated (greater than 1), if below threshold (-1), downregulated
 volc_Go.F1$category <- ifelse(Go.res_F1$padj <= pval_thres,
                                     ifelse(volc_Go.F1$logFC >= fc_thres, "Upregulated", 
                                            ifelse(volc_Go.F1$logFC <= -fc_thres, "Downregulated", "Not Significant")),
                                     "Not Significant")
 
+GoF1_sig <- volc_Go.F1[
+  abs(volc_Go.F1$logFC) > fc_thres & volc_Go.F1$adj.P.Val < pval_thres,
+]
+GoF1_top <- GoF1_sig[order(-abs(GoF1_sig$logFC)), ][1:min(top_n, nrow(GoF1_sig)), ]
+
+
 # Create the volcano plot using ggplot2
 ggplot(volc_Go.F1, aes(x = logFC, y = negLogPval, color = category)) +
+  geom_point(alpha = 0.6, size = 1.5) +
+  geom_text_repel(data = GoF1_top, aes(label = ID), size = 3, max.overlaps = Inf)+
   geom_point(alpha = 0.6, size = 1.5) +
   scale_color_manual(values = c("Upregulated" = "red", "Downregulated" = "blue", "Not Significant" = "grey")) +
   geom_vline(xintercept = c(-fc_thres, fc_thres), linetype = "dashed") +
@@ -506,9 +534,11 @@ ggplot(volc_Go.F1, aes(x = logFC, y = negLogPval, color = category)) +
   ) +
   theme_minimal() +
   theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
     legend.position = "right",
-    plot.title = element_text(hjust = 0.5, size = 16),
-    plot.subtitle = element_text(hjust = 0.5, size = 12)
+    plot.title = element_blank(),
+    plot.subtitle = element_blank()
   )
 
 ### Liver High-Low ####
@@ -580,6 +610,7 @@ ggplot(volc_Li.HD, aes(x = logFC, y = negLogPval, color = category)) +
     plot.subtitle = element_text(hjust = 0.5, size = 12)
   )
 
+
 ### Liver Low-DMSO ####
 #plotting df
 volc_Li.LD <- data.frame(
@@ -609,9 +640,11 @@ ggplot(volc_Li.LD, aes(x = logFC, y = negLogPval, color = category)) +
   ) +
   theme_minimal() +
   theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
     legend.position = "right",
-    plot.title = element_text(hjust = 0.5, size = 16),
-    plot.subtitle = element_text(hjust = 0.5, size = 12)
+    plot.title = element_blank(),
+    plot.subtitle = element_blank()
   )
 
 ### Liver MP-MPD ####
@@ -724,14 +757,23 @@ volc_Li.F1 <- data.frame(
   adj.P.Val = Li.res_F1$padj,
   ID = rownames(Li.res_F1))
 
+
+
 #Column to catagorise genes, if above fc threshold labelled upregulated (greater than 1), if below threshold (-1), downregulated
 volc_Li.F1$category <- ifelse(Li.res_F1$padj <= pval_thres,
                                     ifelse(volc_Li.F1$logFC >= fc_thres, "Upregulated", 
                                            ifelse(volc_Li.F1$logFC <= -fc_thres, "Downregulated", "Not Significant")),
                                     "Not Significant")
 
+LiF1_sig <- volc_Li.F1[
+  abs(volc_Li.F1$logFC) > fc_thres & volc_Li.F1$adj.P.Val < pval_thres,
+]
+LiF1_top <- LiF1_sig[order(-abs(LiF1_sig$logFC)), ][1:min(top_n, nrow(LiF1_sig)), ]
+
 # Create the volcano plot using ggplot2
 ggplot(volc_Li.F1, aes(x = logFC, y = negLogPval, color = category)) +
+  geom_point(alpha = 0.6, size = 1.5) +
+  geom_text_repel(data = LiF1_top, aes(label = ID), size = 3, max.overlaps = Inf) +
   geom_point(alpha = 0.6, size = 1.5) +
   scale_color_manual(values = c("Upregulated" = "red", "Downregulated" = "blue", "Not Significant" = "grey")) +
   geom_vline(xintercept = c(-fc_thres, fc_thres), linetype = "dashed") +
@@ -742,10 +784,12 @@ ggplot(volc_Li.F1, aes(x = logFC, y = negLogPval, color = category)) +
     x = "log2 Fold Change",
     y = "-log10(p-value)",
     color = "Differential Expression"
-  ) +
+  ) + xlim(-4, 4) + 
   theme_minimal() +
   theme(
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
     legend.position = "right",
-    plot.title = element_text(hjust = 0.5, size = 16),
-    plot.subtitle = element_text(hjust = 0.5, size = 12)
+    plot.title = element_blank(),
+    plot.subtitle = element_blank()
   )

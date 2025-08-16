@@ -1,5 +1,6 @@
 library(gplots)
 library(DESeq2)
+library(dplyr)
 
 #### Brain Microplastics heatmaps ####
 
@@ -47,29 +48,33 @@ sc_logBrF1[sc_logBrF1 < -3] <- -3
 heatmap.2(sc_logBrF1, trace ='none', scale = 'none', col=bluered(50), labRow = "", labCol = colnames(sc_logBrF1), cexRow = 0.7, cexCol = 0.7, breaks = seq(-3,3, l=51))
 
 #### Gonad High-Low-DMSO ####
-#sig genes from Go.res_s_HL
+#sig genes from Go.res_s_HD
 
 GoHLD_Norm <- counts(HLD.Go_conds_dds, normalized = TRUE)
 
-GoHL <- intersect(rownames(Go.res_s_HL), rownames(GoHLD_Norm))
-GoHL_Norm_sig <- GoHLD_Norm[GoHL, ]
+Gonad_sample_conditions <- colData(HLD.Go_conds_dds)$conds
+Gonad_keep_samples <- colnames(HLD.Go_conds_dds)[Gonad_sample_conditions %in% c("High", "DMSO")]
+GoHLD_Norm_sub <- GoHLD_Norm[, Gonad_keep_samples]
 
-logGoHL <- log2(GoHL_Norm_sig + 0.5)
-sc_logGoHL <- t(scale(t(logGoHL)))
-sc_logGoHL[sc_logGoHL > 3] <- 3
-sc_logGoHL[sc_logGoHL < -3] <- -3
-heatmap.2(sc_logGoHL, trace ='none', scale = 'none', col=bluered(50), labRow = "", labCol = colnames(sc_logGoHL), cexRow = 0.7, cexCol = 0.7, breaks = seq(-3,3, l=51))
-
-#sig genes from Go.res_s_HD
-
-GoHD <- intersect(rownames(Go.res_s_HD), rownames(GoHLD_Norm))
-GoHD_Norm_sig <- GoHLD_Norm[GoHD, ]
+GoHD <- intersect(rownames(Go.res_s_HD), rownames(GoHLD_Norm_sub))
+GoHD_Norm_sig <- GoHLD_Norm_sub[GoHD, ]
 
 logGoHD <- log2(GoHD_Norm_sig + 0.5)
 sc_logGoHD <- t(scale(t(logGoHD)))
 sc_logGoHD[sc_logGoHD > 3] <- 3
 sc_logGoHD[sc_logGoHD < -3] <- -3
 heatmap.2(sc_logGoHD, trace ='none', scale = 'none', col=bluered(50), labRow = "", labCol = colnames(sc_logGoHD), cexRow = 0.7, cexCol = 0.7, breaks = seq(-3,3, l=51))
+
+#sig genes from Go.res_s_HL
+
+GoHL <- intersect(rownames(Go.res_s_HL), rownames(GoHLD_Norm))
+GoHL_Norm_sig <- GoHLD_Norm[GoHL, ]
+
+logGoHL <- log2(GoHD_Norm_sig + 0.5)
+sc_logGoHL <- t(scale(t(logGoHL)))
+sc_logGoHL[sc_logGoHL > 3] <- 3
+sc_logGoHL[sc_logGoHL < -3] <- -3
+heatmap.2(sc_logGoHL, trace ='none', scale = 'none', col=bluered(50), labRow = "", labCol = colnames(sc_logGoHL), cexRow = 0.7, cexCol = 0.7, breaks = seq(-3,3, l=51))
 
 #sig genes from Go.res_s_LD
 
@@ -99,8 +104,12 @@ heatmap.2(sc_logMP.MPD, trace ='none', scale = 'none', col=bluered(50), labRow =
 
 # sig genes from Go.res_s_MP.DMSO
 
-GoMP.DMSO <- intersect(rownames(Go.res_s_MP.DMSO), rownames(GoMP_Norm))
-GoMP.DMSO_Norm_sig <- GoMP_Norm[GoMP.DMSO, ]
+MP_Gonad_sample_conditions <- colData(MP.Go_conds_dds)$conds
+MP_Gonad_keep_samples <- colnames(MP.Go_conds_dds)[MP_Gonad_sample_conditions %in% c("MP", "DMSO")]
+GoMP_Norm_sub <- GoMP_Norm[, MP_Gonad_keep_samples]
+
+GoMP.DMSO <- intersect(rownames(Go.res_s_MP.DMSO), rownames(GoMP_Norm_sub))
+GoMP.DMSO_Norm_sig <- GoMP_Norm_sub[GoMP.DMSO, ]
 
 logGoMP.DMSO <- log2(GoMP.DMSO_Norm_sig + 0.5)
 sc_logMP.DMSO <- t(scale(t(logGoMP.DMSO)))
@@ -134,17 +143,20 @@ heatmap.2(sc_logF1, trace ='none', scale = 'none', col=bluered(50), labRow = "",
 
 #### Liver HLD ####
 
-#sig genes from Li.res_s_HL
+#sig genes from Li.res_s_LD
 LiHLD_Norm <- counts(HLD.Li_conds_dds, normalized = TRUE)
+Liver_sample_conditions <- colData(HLD.Li_conds_dds)$conds
+Liver_keep_samples <- colnames(HLD.Li_conds_dds)[Liver_sample_conditions %in% c("Low", "DMSO")]
+LiHLD_Norm_sub <- LiHLD_Norm[, Liver_keep_samples]
 
-LiHL <- intersect(rownames(Li.res_s_HL), rownames(LiHLD_Norm))
-LiHL_Norm_sig <- LiHLD_Norm[LiHL, ]
+LiLD <- intersect(rownames(Li.res_s_LD), rownames(LiHLD_Norm_sub))
+LiLD_Norm_sig <- LiHLD_Norm_sub[LiLD, ]
 
-logLiHL <- log2(LiHL_Norm_sig + 0.5)
-sc_logLiHL <- t(scale(t(logLiHL)))
-sc_logLiHL[sc_logLiHL > 3] <- 3
-sc_logLiHL[sc_logLiHL < -3] <- -3
-heatmap.2(sc_logLiHL, trace ='none', scale = 'none', col=bluered(50), labRow = rownames(sc_logLiHL), labCol = colnames(sc_logLiHL), cexRow = 0.7, cexCol = 0.7, breaks = seq(-3,3, l=51))
+logLiLD <- log2(LiLD_Norm_sig + 0.5)
+sc_logLiLD <- t(scale(t(logLiLD)))
+sc_logLiLD[sc_logLiLD > 3] <- 3
+sc_logLiLD[sc_logLiLD < -3] <- -3
+heatmap.2(sc_logLiLD, trace ='none', scale = 'none', col=bluered(50), labRow = "", labCol = colnames(sc_logLiLD), cexRow = 0.7, cexCol = 0.7, breaks = seq(-3,3, l=51))
 
 #sig genes from Li.res_s_HD
 LiHD <- intersect(rownames(Li.res_s_HD), rownames(LiHLD_Norm))

@@ -34,6 +34,12 @@ Br.res_s_MPD.DMSO
 ### Gonad High_Low-DMSO ####
 
 #In Gonad High DEHP vs Low DEHP we had 5032 significant DEGs.
+
+Go.HD_sig_ordered <- Go.res_HD[Go.res_HD$padj <= 0.05 & abs(Go.res_HD$log2FoldChange) > 1, ]
+Go.HD_sig_ordered <- Go.res_s_HD[order(-abs(Go.res_s_HD$log2FoldChange), Go.res_s_HD$log2FoldChange), ]
+View(Go.HD_sig_ordered)
+Go.HD_sig_ordered <- as.data.frame(Go.HD_sig_ordered)
+
 #In Gonad High DEHP vs DMSO control we had 5184 significant DEGs
 
 #Because there are so many genes we will make a venn diagram to see the overlap
@@ -114,6 +120,10 @@ ggVennDiagram(Go_MP_SL, label_alpha = 0, label = "count") +
 
 #In liver Low vs DMSO there were 415 significant DEGs
 
+Li.LD_sig_ordered <- Li.res_s_LD[order(-abs(Li.res_s_LD$log2FoldChange), Li.res_s_LD$log2FoldChange), ]
+Li.LD_sig_ordered <- as.data.frame(Li.LD_sig_ordered)
+View(Li.LD_sig_ordered)
+
 Li_HLD_SL <- list(HighvLow=rownames(Li.res_s_HL), HighvDMSO=rownames(Li.res_s_HD), LowvDMSO=rownames(Li.res_s_LD))
 
 ggVennDiagram(Li_HLD_SL, label_alpha = 0, label = "count") +
@@ -132,7 +142,7 @@ ggVennDiagram(Li_HLD_SL, label_alpha = 0, label = "count") +
 Br_F1_SL <- list(F1=rownames(Br.res_s_F1), F0=rownames(Br.res_s_HD))
 
 ggVennDiagram(Br_F1_SL, label_alpha = 0, label = "count") +
-  scale_fill_gradient(low = "white", high = "pink")+
+  scale_fill_gradient(low = "white", high = "gray")+
   theme(legend.position = "none") + 
   theme(text = element_text(size = 10))
 
