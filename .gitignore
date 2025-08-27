@@ -15,6 +15,7 @@
 .RDataTmp*
 Volcano plots/
 test.qmd
+Significant genes/
 Results Draft.*
 RNA-seq Analysis plots.*
 RNA-seq-Analysis-plots.html
