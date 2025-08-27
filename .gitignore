@@ -9,5 +9,8 @@
 .Liver_counts.txt
 .Gonad_counts.txt
 /All_Counts.txt
-/All genes
-/Significant genes
+/All genes text/
+/All genes/
+/DDS objects/
+Significant genes/*
+.RDataTmp*
