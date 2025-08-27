@@ -12,5 +12,13 @@
 /All genes text/
 /All genes/
 /DDS objects/
-Significant genes/*
 .RDataTmp*
+Volcano plots/
+test.qmd
+Results Draft.*
+RNA-seq Analysis plots.*
+RNA-seq-Analysis-plots.html
+Results Draft_files/
+Results-Draft_files/
+gene_info.tsv
+Reads mapped data/

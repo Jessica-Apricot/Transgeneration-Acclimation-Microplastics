@@ -1,9 +1,14 @@
 #install.packages("BiocManager")
 #BiocManager::install("Rsubread")
+install.packages("ggfortify")
 library(dplyr)
 library(DESeq2)
 library(edgeR)
 library(limma)
+library(ggplot2)
+library(plotly)
+library(ggfortify)
+
 
 #The "Script" R script makes the following files 
 
@@ -232,7 +237,17 @@ Go.res_s_LD
 # 3 genes with a p-value above 0.05
 
 #PCA
+
 plotPCA(rlog(HLD.Go_conds_dds, blind=TRUE), intgroup="conds")
+
+PCA_object<- rlog(HLD.Go_conds_dds, blind = TRUE)
+PCA_object <- assay(PCA_object)
+
+pca_res <- prcomp(t(PCA_object), scale. = TRUE)
+p <- autoplot(pca_res)
+
+ggplotly(p)
+
 
 #### Gonad Microplastics ####
 
