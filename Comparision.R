@@ -12,38 +12,38 @@ library(ggplot2)
 ### Brain High-Low-DMSO ####
 
 #In Brain High vs DMSO we had one significant DEG, this was ttc6, which was upregulated 5.2x in the High DEHP exposure.
-head(Br.res_s_HD)
+head(Br_res_s_HD)
 
 #In Brain Low vs DMSO we had one significant DEG, this was hyal3, which was upregulated 2.6x in the Low DEHP exposure
-head(Br.res_s_LD)
+head(Br_res_s_LD)
 
 ### Brain Microplastics ####
 
 #In Brain Microplastics control vs DMSO we had 2 significant DEGs, these were histh1l and si:dkey-32n7.4.
 #histh1l was downregulated 1.2x in Microplastics
 # si:dkey-32n7.4. was upregulated 2.8x in Microplastics
-Br.res_s_MP.DMSO
+Br_res_s_MP_DMSO
 
 
 #In Brain Microplastics + DEHP vs DMSO control we had 3 significant DEGs, these were si:dkey-32n7.4, krt5 and krt5_1
 #si:dkey-32n7.4 which was upregualted 2.8x  in Microplastics + DEHP
 # krt5 and krt5_1 are the same feature/gene, it is downregulated 2.0x in Microplastics +DEHP
-Br.res_s_MPD.DMSO
+Br_res_s_MPD_DMSO
 
 
 ### Gonad High_Low-DMSO ####
 
 #In Gonad High DEHP vs Low DEHP we had 5032 significant DEGs.
 
-Go.HD_sig_ordered <- Go.res_HD[Go.res_HD$padj <= 0.05 & abs(Go.res_HD$log2FoldChange) > 1, ]
-Go.HD_sig_ordered <- Go.res_s_HD[order(-abs(Go.res_s_HD$log2FoldChange), Go.res_s_HD$log2FoldChange), ]
-View(Go.HD_sig_ordered)
-Go.HD_sig_ordered <- as.data.frame(Go.HD_sig_ordered)
+Go_HD_sig_ordered <- Go_res_HD[Go_res_HD$padj <= 0.05 & abs(Go_res_HD$log2FoldChange) > 1, ]
+Go_HD_sig_ordered <- Go_res_s_HD[order(-abs(Go_res_s_HD$log2FoldChange), Go_res_s_HD$log2FoldChange), ]
+View(Go_HD_sig_ordered)
+Go_HD_sig_ordered <- as.data.frame(Go_HD_sig_ordered)
 
 #In Gonad High DEHP vs DMSO control we had 5184 significant DEGs
 
 #Because there are so many genes we will make a venn diagram to see the overlap
-Go_HLD_SL <- list(HighvLow=rownames(Go.res_s_HL), HighvDMSO=rownames(Go.res_s_HD), LowvDMSO=rownames(Go.res_s_LD)) 
+Go_HLD_SL <- list(HighvLow=rownames(Go_res_s_HL), HighvDMSO=rownames(Go_res_s_HD), LowvDMSO=rownames(Go_res_s_LD)) 
 
 ggVennDiagram(Go_HLD_SL, label_alpha = 0, label = "count") +
   scale_fill_gradient(low = "white", high = "pink")+
@@ -56,21 +56,21 @@ ggVennDiagram(Go_HLD_SL, label_alpha = 0, label = "count") +
 #1249 DEGs unique to HighvsDMSO
 #1097 DEGs unique to HighvsLow
 
-
-shared_HL <- Go.res_s_HL[rownames(Go.res_s_HL) %in% genes_shared, ]
-shared_HD <- Go.res_s_HD[rownames(Go.res_s_HD) %in% genes_shared, ]
+#this doesnt work, i 'might' fix later
+shared_HL <- Go_res_s_HL[rownames(Go_res_s_HL) %in% genes_shared, ]
+shared_HD <- Go_res_s_HD[rownames(Go_res_s_HD) %in% genes_shared, ]
 
 # Unique to High vs Low
-unique_HL <- Go.res_s_HL[rownames(Go.res_s_HL) %in% genes_unique_HL, ]
+unique_HL <- Go_res_s_HL[rownames(Go_res_s_HL) %in% genes_unique_HL, ]
 
 # Unique to High vs DMSO
-unique_HD <- Go.res_s_HD[rownames(Go.res_s_HD) %in% genes_unique_HD, ]
+unique_HD <- Go_res_s_HD[rownames(Go_res_s_HD) %in% genes_unique_HD, ]
 
 #In Gonad Low DEHP vs DMSO control we had 3 DEGs. These were acbd5b, kifap3b and ttpa
 #acbd5b was upregulated 1.5x in High
 #kifap3b was downregulated 0.84x in High
 #ttpa was downregulated 2.17x in High
-Go.res_s_LD
+Go_res_s_LD
 
 
 
@@ -82,7 +82,7 @@ Go.res_s_LD
 #In Gonad Microplastics control vs DMSO control there were 5758 DEGs
 
 #In Gonad Microplastics+DEHP vs DMSO control there were 9 DEGs
-Go.res_s_MPD.DMSO
+Go_res_s_MPD_DMSO
 #apof was upregulated 6.8x in in Microplastics+DEHP
 #fam126b was upregulated 6.2x 
 #ddc was upregulated 6.7x
@@ -94,7 +94,7 @@ Go.res_s_MPD.DMSO
 #arhgef10lb_1 was upregulated 5.4x
 
 
-Go_MP_SL <- list(MPvMPDEHP=rownames(Go.res_s_MP.MPD), MPvDMSO=rownames(Go.res_s_MP.DMSO), MPDEHPvDMSO=rownames(Go.res_s_MPD.DMSO)) 
+Go_MP_SL <- list(MPvMPDEHP=rownames(Go_res_s_MP_MPD), MPvDMSO=rownames(Go_res_s_MP_DMSO), MPDEHPvDMSO=rownames(Go_res_s_MPD_DMSO)) 
 ggVennDiagram(Go_MP_SL, label_alpha = 0, label = "count") +
   scale_fill_gradient(low = "white", high = "pink")+
   theme(legend.position = "none") + 
@@ -120,11 +120,11 @@ ggVennDiagram(Go_MP_SL, label_alpha = 0, label = "count") +
 
 #In liver Low vs DMSO there were 415 significant DEGs
 
-Li.LD_sig_ordered <- Li.res_s_LD[order(-abs(Li.res_s_LD$log2FoldChange), Li.res_s_LD$log2FoldChange), ]
-Li.LD_sig_ordered <- as.data.frame(Li.LD_sig_ordered)
-View(Li.LD_sig_ordered)
+Li_LD_sig_ordered <- Li_res_s_LD[order(-abs(Li_res_s_LD$log2FoldChange), Li_res_s_LD$log2FoldChange), ]
+Li_LD_sig_ordered <- as.data.frame(Li_LD_sig_ordered)
+View(Li_LD_sig_ordered)
 
-Li_HLD_SL <- list(HighvLow=rownames(Li.res_s_HL), HighvDMSO=rownames(Li.res_s_HD), LowvDMSO=rownames(Li.res_s_LD))
+Li_HLD_SL <- list(HighvLow=rownames(Li_res_s_HL), HighvDMSO=rownames(Li_res_s_HD), LowvDMSO=rownames(Li_res_s_LD))
 
 ggVennDiagram(Li_HLD_SL, label_alpha = 0, label = "count") +
   scale_fill_gradient(low = "white", high = "pink")+
@@ -139,7 +139,7 @@ ggVennDiagram(Li_HLD_SL, label_alpha = 0, label = "count") +
 ### Brain F1 vs Brain F0 ####
 
 
-Br_F1_SL <- list(F1=rownames(Br.res_s_F1), F0=rownames(Br.res_s_HD))
+Br_F1_SL <- list(F1=rownames(Br_res_s_F1), F0=rownames(Br_res_s_HD))
 
 ggVennDiagram(Br_F1_SL, label_alpha = 0, label = "count") +
   scale_fill_gradient(low = "white", high = "gray")+
@@ -149,7 +149,7 @@ ggVennDiagram(Br_F1_SL, label_alpha = 0, label = "count") +
 ### Gonad F1 vs Gonad F0 ####
 
 
-Go_F1_SL <- list(F1=rownames(Go.res_s_F1), F0=rownames(Go.res_s_HD))
+Go_F1_SL <- list(F1=rownames(Go_res_s_F1), F0=rownames(Go_res_s_HD))
 
 ggVennDiagram(Go_F1_SL, label_alpha = 0, label = "count") +
   scale_fill_gradient(low = "white", high = "pink")+
@@ -157,16 +157,16 @@ ggVennDiagram(Go_F1_SL, label_alpha = 0, label = "count") +
   theme(text = element_text(size = 10)) 
 
 #Overlap is 9 genes
-F1F0_shared <- intersect(rownames(Go.res_s_F1), rownames(Go.res_s_HD))
+F1F0_shared <- intersect(rownames(Go_res_s_F1), rownames(Go_res_s_HD))
 
-GoF1F0_overlap <- Go.res_s_F1[rownames(Go.res_s_F1) %in% F1F0_shared, ]
+GoF1F0_overlap <- Go_res_s_F1[rownames(Go_res_s_F1) %in% F1F0_shared, ]
 
 head(GoF1F0_overlap, 10)
 
 ### Liver F1 vs Liver F0 ####
 
 
-Li_F1_SL <- list(F1=rownames(Li.res_s_F1), F0=rownames(Li.res_s_HD))
+Li_F1_SL <- list(F1=rownames(Li_res_s_F1), F0=rownames(Li_res_s_HD))
 
 ggVennDiagram(Li_F1_SL, label_alpha = 0, label = "count") +
   scale_fill_gradient(low = "white", high = "pink")+
@@ -176,13 +176,13 @@ ggVennDiagram(Li_F1_SL, label_alpha = 0, label = "count") +
 #Out of curiosity 
 ### Low vs DMSO compared to F1
 
-Test_Li_F1_SL <- list(F1=rownames(Li.res_s_F1), F0=rownames(Li.res_s_LD))
+Test_Li_F1_SL <- list(F1=rownames(Li_res_s_F1), F0=rownames(Li_res_s_LD))
 venn(Test_Li_F1_SL)
 
 #How many genes are upregulated
 
 # BF1
-upregulated_BF1 <- Br.res_s_F1[Br.res_s_F1$log2FoldChange > 0, ]
+upregulated_BF1 <- Br_res_s_F1[Br_res_s_F1$log2FoldChange > 0, ]
 r_upregulated_BF1 <- upregulated_BF1
 # Calculate ranking metric
 r_upregulated_BF1$ranking_metric <- -log10(r_upregulated_BF1$padj + 1e-10) * sign(r_upregulated_BF1$log2FoldChange)
@@ -194,7 +194,7 @@ r_upregulated_BF1 <- rownames(r_upregulated_BF1)
 write.table(r_upregulated_BF1, file = "Significant genes/Upregulated/r_upregulated_BF1.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
-Downregulated_BF1 <- Br.res_s_F1[Br.res_s_F1$log2FoldChange < 0, ]
+Downregulated_BF1 <- Br_res_s_F1[Br_res_s_F1$log2FoldChange < 0, ]
 r_Downregulated_BF1 <- Downregulated_BF1
 # Calculate ranking metric
 r_Downregulated_BF1$ranking_metric <- -log10(r_Downregulated_BF1$padj + 1e-10) * sign(r_Downregulated_BF1$log2FoldChange)
@@ -208,7 +208,7 @@ write.table(r_Downregulated_BF1, file = "Significant genes/Downregulated/r_Downr
 
 
 # HD
-upregulated_HD <- Go.res_s_HD[Go.res_s_HD$log2FoldChange > 0, ]
+upregulated_HD <- Go_res_s_HD[Go_res_s_HD$log2FoldChange > 0, ]
 r_upregulated_HD <-upregulated_HD
 
 # Calculate ranking metric
@@ -222,7 +222,7 @@ write.table(r_upregulated_HD, file = "Significant genes/Upregulated/r_upregulate
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 
-Downregulated_HD <- Go.res_s_HD[Go.res_s_HD$log2FoldChange < 0, ]
+Downregulated_HD <- Go_res_s_HD[Go_res_s_HD$log2FoldChange < 0, ]
 r_Downregulated_HD <- Downregulated_HD
 
 # Calculate ranking metric
@@ -237,7 +237,7 @@ write.table(r_Downregulated_HD, file = "Significant genes/Downregulated/r_Downre
 
 
 # GF1
-upregulated_GF1 <- Go.res_s_F1[Go.res_s_F1$log2FoldChange > 0, ]
+upregulated_GF1 <- Go_res_s_F1[Go_res_s_F1$log2FoldChange > 0, ]
 r_upregulated_GF1 <- upregulated_GF1
 
 # Calculate ranking metric
@@ -251,7 +251,7 @@ write.table(r_upregulated_GF1, file = "Significant genes/Upregulated/r_upregulat
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 
-Downregulated_GF1 <- Go.res_s_F1[Go.res_s_F1$log2FoldChange < 0, ]
+Downregulated_GF1 <- Go_res_s_F1[Go_res_s_F1$log2FoldChange < 0, ]
 r_Downregulated_GF1 <- Downregulated_GF1
 
 # Calculate ranking metric
@@ -265,7 +265,7 @@ write.table(r_Downregulated_GF1, file = "Significant genes/Downregulated/r_Downr
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 # LLD
-upregulated_LLD <- Li.res_s_LD[Li.res_s_LD$log2FoldChange > 0, ]
+upregulated_LLD <- Li_res_s_LD[Li_res_s_LD$log2FoldChange > 0, ]
 r_upregulated_LLD <- upregulated_LLD
 
 # Calculate ranking metric
@@ -279,7 +279,7 @@ write.table(r_upregulated_LLD, file = "Significant genes/Upregulated/r_upregulat
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 
-Downregulated_LLD <- Li.res_s_LD[Li.res_s_LD$log2FoldChange < 0, ]
+Downregulated_LLD <- Li_res_s_LD[Li_res_s_LD$log2FoldChange < 0, ]
 r_Downregulated_LLD <- Downregulated_LLD
 
 # Calculate ranking metric
@@ -293,7 +293,7 @@ write.table(r_Downregulated_LLD, file = "Significant genes/Downregulated/r_Downr
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 # LF1 
-upregulated_LF1 <- Li.res_s_F1[Li.res_s_F1$log2FoldChange > 0, ]
+upregulated_LF1 <- Li_res_s_F1[Li_res_s_F1$log2FoldChange > 0, ]
 r_upregulated_LF1 <- upregulated_LF1
 
 # Calculate ranking metric
@@ -306,7 +306,7 @@ r_upregulated_LF1 <- rownames(r_upregulated_LF1)
 write.table(r_upregulated_LF1, file = "Significant genes/Upregulated/r_upregulated_LF1.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
-Downregulated_LF1 <- Li.res_s_F1[Li.res_s_F1$log2FoldChange < 0, ]
+Downregulated_LF1 <- Li_res_s_F1[Li_res_s_F1$log2FoldChange < 0, ]
 r_Downregulated_LF1 <- Downregulated_LF1
 
 # Calculate ranking metric
@@ -320,7 +320,7 @@ write.table(r_Downregulated_LF1, file = "Significant genes/Downregulated/r_Downr
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 # GMPDM
-upregulated_GMPDM <- Go.res_s_MP.DMSO[Go.res_s_MP.DMSO$log2FoldChange > 0, ]
+upregulated_GMPDM <- Go_res_s_MP_DMSO[Go_res_s_MP_DMSO$log2FoldChange > 0, ]
 r_upregulated_GMPDM <- upregulated_GMPDM
 
 # Calculate ranking metric
@@ -333,7 +333,7 @@ r_upregulated_GMPDM <- rownames(r_upregulated_GMPDM)
 write.table(r_upregulated_GMPDM, file = "Significant genes/Upregulated/r_upregulated_GMPDM.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
-Downregulated_GMPDM <- Go.res_s_MP.DMSO[Go.res_s_MP.DMSO$log2FoldChange < 0, ]
+Downregulated_GMPDM <- Go_res_s_MP_DMSO[Go_res_s_MP_DMSO$log2FoldChange < 0, ]
 r_Downregulated_GMPDM <- Downregulated_GMPDM
 
 # Calculate ranking metric

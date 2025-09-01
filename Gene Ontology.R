@@ -15,8 +15,8 @@ gene_info <- read.delim("gene_info.tsv", header = TRUE, sep = "\t")
 length_vector <- gene_info$Length
 names(length_vector) <- gene_info$GeneID
 
-BrainF1_genes <- ifelse(Br.res_F1$padj < 0.05, 1, 0)
-names(BrainF1_genes) <- rownames(Br.res_F1)
+BrainF1_genes <- ifelse(Br_res_F1$padj < 0.05, 1, 0)
+names(BrainF1_genes) <- rownames(Br_res_F1)
 
 BrF1_valid_genes <- intersect(names(BrainF1_genes), names(length_vector))
 
@@ -31,18 +31,18 @@ hist(BrF1_pwf$bias.data, 30)
 hist(BrF1_pwf$pwf, 30)
 
 Br_F1_GO <- goseq(BrF1_pwf, "danRer6", "geneSymbol")
-Br_F1_GO.padj <- p.adjust(Br_F1_GO$over_represented_pvalue, method = "fdr")
-sum(Br_F1_GO.padj < 0.05)
+Br_F1_GO_padj <- p.adjust(Br_F1_GO$over_represented_pvalue, method = "fdr")
+sum(Br_F1_GO_padj < 0.05)
 # No significant GO terms, Not enough genes?
-View(Br_F1_GO.padj)
+View(Br_F1_GO_padj)
 
 
 #### Gonad HLD #####
 
 ##### Gonad High-Low #####
 
-GoHL_genes <- ifelse(Go.res_HL$padj < 0.05, 1, 0)
-names(GoHL_genes) <- rownames(Go.res_HL)
+GoHL_genes <- ifelse(Go_res_HL$padj < 0.05, 1, 0)
+names(GoHL_genes) <- rownames(Go_res_HL)
 
 
 GoHL_valid_genes <- intersect(names(GoHL_genes), names(length_vector))
@@ -56,18 +56,18 @@ hist(GoHL_pwf$bias.data, 30)
 hist(GoHL_pwf$pwf, 30)
 
 GoHL_GO <- goseq(GoHL_pwf, "danRer6", "geneSymbol")
-GoHL_GO.padj <- p.adjust(GoHL_GO$over_represented_pvalue, method = "fdr")
-sum(GoHL_GO.padj < 0.05)
+GoHL_GO_padj <- p.adjust(GoHL_GO$over_represented_pvalue, method = "fdr")
+sum(GoHL_GO_padj < 0.05)
 #225 significant GO terms
 
-GoHL_GO.sig <- GoHL_GO$category[GoHL_GO.padj < 0.05]
-length(GoHL_GO.sig)
-head(GoHL_GO.sig)
-View(GoHL_GO.sig)
+GoHL_GO_sig <- GoHL_GO$category[GoHL_GO_padj < 0.05]
+length(GoHL_GO_sig)
+head(GoHL_GO_sig)
+View(GoHL_GO_sig)
 
-GoHL_GO.df <- data.frame(GO_ID = GoHL_GO$category[GoHL_GO.padj < 0.05],
-                         padj = GoHL_GO.padj[GoHL_GO.padj < 0.05])
-write.table(GoHL_GO.df, file = "GoHL_GO_sig_with_padj.txt", quote = FALSE, row.names = FALSE, sep = "\t")
+GoHL_GO_df <- data.frame(GO_ID = GoHL_GO$category[GoHL_GO_padj < 0.05],
+                         padj = GoHL_GO_padj[GoHL_GO_padj < 0.05])
+write.table(GoHL_GO_df, file = "GoHL_GO_sig_with_padj.txt", quote = FALSE, row.names = FALSE, sep = "\t")
 
 
 #First 5 GO Terms
@@ -79,8 +79,8 @@ write.table(GoHL_GO.df, file = "GoHL_GO_sig_with_padj.txt", quote = FALSE, row.n
 
 ##### Gonad High-DMSO #####
 
-GoHD_genes <- ifelse(Go.res_HD$padj < 0.05, 1, 0)
-names(GoHD_genes) <- rownames(Go.res_HD)
+GoHD_genes <- ifelse(Go_res_HD$padj < 0.05, 1, 0)
+names(GoHD_genes) <- rownames(Go_res_HD)
 
 GoHD_valid_genes <- intersect(names(GoHD_genes), names(length_vector))
 
@@ -93,12 +93,12 @@ hist(GoHD_pwf$bias.data, 30)
 hist(GoHD_pwf$pwf, 30)
 
 GoHD_GO <- goseq(GoHD_pwf, "danRer6", "geneSymbol")
-GoHD_GO.padj <- p.adjust(GoHD_GO$over_represented_pvalue, method = "fdr")
-sum(GoHD_GO.padj < 0.05)
+GoHD_GO_padj <- p.adjust(GoHD_GO$over_represented_pvalue, method = "fdr")
+sum(GoHD_GO_padj < 0.05)
 
-GoHD_GO.sig <- GoHD_GO$category[GoHD_GO.padj < 0.05]
-length(GoHD_GO.sig)
-head(GoHD_GO.sig)
+GoHD_GO_sig <- GoHD_GO$category[GoHD_GO_padj < 0.05]
+length(GoHD_GO_sig)
+head(GoHD_GO_sig)
 
 #278 significant GO terms
 
@@ -106,28 +106,28 @@ head(GoHD_GO.sig)
 #### Gonad Microplastics #####
 ##### Gonad MP vs MPD ######
 
-GoMP.MPD_genes <- ifelse(Go.res_MP.MPD$padj < 0.05, 1, 0)
-names(GoMP.MPD_genes) <- rownames(Go.res_MP.MPD)
+GoMP_MPD_genes <- ifelse(Go_res_MP_MPD$padj < 0.05, 1, 0)
+names(GoMP_MPD_genes) <- rownames(Go_res_MP_MPD)
 
-GoMP.MPD_valid_genes <- intersect(names(GoMP.MPD_genes), names(length_vector))
+GoMP_MPD_valid_genes <- intersect(names(GoMP_MPD_genes), names(length_vector))
 
-GoMP.MPD_genes <- GoMP.MPD_genes[GoMP.MPD_valid_genes]
-GoMP.MPD_length_vector <- length_vector[GoMP.MPD_valid_genes]
+GoMP_MPD_genes <- GoMP_MPD_genes[GoMP_MPD_valid_genes]
+GoMP_MPD_length_vector <- length_vector[GoMP_MPD_valid_genes]
 
 #Calculate gene weight values
-GoMP.MPD_pwf <- nullp(GoMP.MPD_genes, bias.data = GoMP.MPD_length_vector)
-hist(GoMP.MPD_pwf$bias.data, 30)
-hist(GoMP.MPD_pwf$pwf, 30)
+GoMP_MPD_pwf <- nullp(GoMP_MPD_genes, bias.data = GoMP_MPD_length_vector)
+hist(GoMP_MPD_pwf$bias.data, 30)
+hist(GoMP_MPD_pwf$pwf, 30)
 
-GoMP.MPD_GO <- goseq(GoMP.MPD_pwf, "danRer6", "geneSymbol")
-GoMP.MPD_GO.padj <- p.adjust(GoHD_GO$over_represented_pvalue, method = "fdr")
-sum(GoMP.MPD_GO.padj < 0.05)
+GoMP_MPD_GO <- goseq(GoMP_MPD_pwf, "danRer6", "geneSymbol")
+GoMP_MPD_GO_padj <- p.adjust(GoHD_GO$over_represented_pvalue, method = "fdr")
+sum(GoMP_MPD_GO_padj < 0.05)
 #278 significant GO terms
 
-GoMP.MPD_GO.sig <- GoMP.MPD_GO$category[GoMP.MPD_GO.padj < 0.05]
-length(GoMP.MPD_GO.sig)
-head(GoMP.MPD_GO.sig)
-head(GoMP.MPD_GO)
+GoMP_MPD_GO_sig <- GoMP_MPD_GO$category[GoMP_MPD_GO_padj < 0.05]
+length(GoMP_MPD_GO_sig)
+head(GoMP_MPD_GO_sig)
+head(GoMP_MPD_GO)
 
 #First Five significant genes
 #GO:0045202 - synapse
@@ -137,28 +137,28 @@ head(GoMP.MPD_GO)
 #GO:0099536 - synaptic signaling
 
 ##### Gonad MP vs DMSO #####
-GoMP.DMSO_genes <- ifelse(Go.res_MP.DMSO$padj < 0.05, 1, 0)
-names(GoMP.DMSO_genes) <- rownames(Go.res_MP.DMSO)
+GoMP_DMSO_genes <- ifelse(Go_res_MP_DMSO$padj < 0.05, 1, 0)
+names(GoMP_DMSO_genes) <- rownames(Go_res_MP_DMSO)
 
-GoMP.DMSO_valid_genes <- intersect(names(GoMP.DMSO_genes), names(length_vector))
+GoMP_DMSO_valid_genes <- intersect(names(GoMP_DMSO_genes), names(length_vector))
 
-GoMP.DMSO_genes <- GoMP.DMSO_genes[GoMP.DMSO_valid_genes]
-GoMP.DMSO_length_vector <- length_vector[GoMP.DMSO_valid_genes]
+GoMP_DMSO_genes <- GoMP_DMSO_genes[GoMP_DMSO_valid_genes]
+GoMP_DMSO_length_vector <- length_vector[GoMP_DMSO_valid_genes]
 
 #Calculate gene weight values
-GoMP.DMSO_pwf <- nullp(GoMP.DMSO_genes, bias.data = GoMP.DMSO_length_vector)
-hist(GoMP.DMSO_pwf$bias.data, 30)
-hist(GoMP.DMSO_pwf$pwf, 30)
+GoMP_DMSO_pwf <- nullp(GoMP_DMSO_genes, bias.data = GoMP_DMSO_length_vector)
+hist(GoMP_DMSO_pwf$bias.data, 30)
+hist(GoMP_DMSO_pwf$pwf, 30)
 
-GoMP.DMSO_GO <- goseq(GoMP.DMSO_pwf, "danRer6", "geneSymbol")
-GoMP.DMSO_GO.padj <- p.adjust(GoMP.DMSO_GO$over_represented_pvalue, method = "fdr")
-sum(GoMP.DMSO_GO.padj < 0.05)
+GoMP_DMSO_GO <- goseq(GoMP_DMSO_pwf, "danRer6", "geneSymbol")
+GoMP_DMSO_GO_padj <- p.adjust(GoMP_DMSO_GO$over_represented_pvalue, method = "fdr")
+sum(GoMP_DMSO_GO_padj < 0.05)
 #57 significant GO terms
 
-GoMP.DMSO_GO.sig <- GoMP.DMSO_GO$category[GoMP.DMSO_GO.padj < 0.05]
-length(GoMP.DMSO_GO.sig)
-head(GoMP.DMSO_GO.sig)
-head(GoMP.DMSO_GO)
+GoMP_DMSO_GO_sig <- GoMP_DMSO_GO$category[GoMP_DMSO_GO_padj < 0.05]
+length(GoMP_DMSO_GO_sig)
+head(GoMP_DMSO_GO_sig)
+head(GoMP_DMSO_GO)
 
 #First five significant GO Terms
 #GO:0045202 - synapse
@@ -169,8 +169,8 @@ head(GoMP.DMSO_GO)
 
 #### Gonad F1 #####
 
-GoF1_genes <- ifelse(Go.res_F1$padj < 0.05, 1, 0)
-names(GoF1_genes) <- rownames(Go.res_F1)
+GoF1_genes <- ifelse(Go_res_F1$padj < 0.05, 1, 0)
+names(GoF1_genes) <- rownames(Go_res_F1)
 
 GoF1_valid_genes <- intersect(names(GoF1_genes), names(length_vector))
 
@@ -183,15 +183,15 @@ hist(GoF1_pwf$bias.data, 30)
 hist(GoF1_pwf$pwf, 30)
 
 GoF1_GO <- goseq(GoF1_pwf, "danRer6", "geneSymbol")
-GoF1_GO.padj <- p.adjust(GoF1_GO$over_represented_pvalue, method = "fdr")
-sum(GoF1_GO.padj < 0.05)
+GoF1_GO_padj <- p.adjust(GoF1_GO$over_represented_pvalue, method = "fdr")
+sum(GoF1_GO_padj < 0.05)
 #0 significant GO Terms
 
 #### Liver HLD ####
 ###### Liver Low-DMSO ####
 
-LiLD_genes <- ifelse(Li.res_LD$padj < 0.05, 1, 0)
-names(LiLD_genes) <- rownames(Li.res_LD)
+LiLD_genes <- ifelse(Li_res_LD$padj < 0.05, 1, 0)
+names(LiLD_genes) <- rownames(Li_res_LD)
 
 LiLD_valid_genes <- intersect(names(LiLD_genes), names(length_vector))
 
@@ -204,8 +204,8 @@ hist(LiLD_pwf$bias.data, 30)
 hist(LiLD_pwf$pwf, 30)
 
 LiLD_GO <- goseq(LiLD_pwf, "danRer6", "geneSymbol")
-LiLD_GO.padj <- p.adjust(LiLD_GO$over_represented_pvalue, method = "fdr")
-sum(LiLD_GO.padj < 0.05)
+LiLD_GO_padj <- p.adjust(LiLD_GO$over_represented_pvalue, method = "fdr")
+sum(LiLD_GO_padj < 0.05)
 #0 significant GO terms
 
 

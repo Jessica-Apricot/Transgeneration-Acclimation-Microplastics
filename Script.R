@@ -64,6 +64,7 @@ Brain_Counts <- count_data[,7:30]
 Gonad_Counts <- count_data[,31:54]
 Liver_Counts <- count_data[,55:78]
 
+
 write.table(All_Counts, file = "All_Counts.txt", sep = "\t", quote = FALSE, col.names = NA)
 write.table(Brain_Counts, file = "Brain_Counts.txt", sep = "\t", quote = FALSE, col.names = NA)
 write.table(Gonad_Counts, file = "Gonad_Counts.txt", sep = "\t", quote = FALSE, col.names = NA)
