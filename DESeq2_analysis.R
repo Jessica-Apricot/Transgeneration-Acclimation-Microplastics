@@ -1,6 +1,6 @@
 #install.packages("BiocManager")
 #BiocManager::install("Rsubread")
-install.packages("ggfortify")
+#install.packages("ggfortify")
 library(dplyr)
 library(DESeq2)
 library(edgeR)
@@ -120,22 +120,46 @@ dim(Br_res_s_LD) # 1 significant
 Br_res_s_LD
 
 #PCA
-plotPCA(rlog(HLD_Br_conds_dds, blind=TRUE), intgroup="conds")
+#plotPCA(rlog(HLD_Br_conds_dds, blind=TRUE), intgroup="conds")
 
-HLD_Br_PCA <- rlog(HLD_Br_conds_dds, blind = TRUE)
+HLD_Br_PCA <- rlog(HLD_Br_conds_dds, blind = TRUE) 
+HLD_Br_rv <- rowVars(assay(HLD_Br_PCA)) 
+HLD_Br_top_500 <- order(HLD_Br_rv, decreasing = TRUE)[1:500] 
 
-# Step 2: Extract top 500 most variable genes
-HLD_Br_rv <- rowVars(assay(HLD_Br_PCA))
-HLD_Br_top_500 <- order(HLD_Br_rv, decreasing = TRUE)[1:500]
-HLD_Br_top_matrix <- assay(HLD_Br_PCA)[HLD_Br_top_500, ]
+HLD_Br_top_matrix <- assay(HLD_Br_PCA)[HLD_Br_top_500, ] 
 
 HLD_Br_pca_res <- prcomp(t(HLD_Br_top_matrix), scale. = TRUE)
 
+HLD_Br_metadata <- as.data.frame(colData(HLD_Br_conds_dds)) 
 
-HLD_Br_metadata <- as.data.frame(colData(HLD_Br_conds_dds))
+HLD_Br_pca_df <- as.data.frame(HLD_Br_pca_res$x)
 
-HLD_Br_p <- autoplot(HLD_Br_pca_res, data = HLD_Br_metadata, colour = "conds")
-ggplotly(HLD_Br_p)
+HLD_Br_pca_df$conds <- HLD_Br_metadata$conds 
+
+percentVar <- round(100 * (HLD_Br_pca_res$sdev)^2 / sum(HLD_Br_pca_res$sdev^2), 1)
+
+#with jitter 
+set.seed(9)
+HLD_Br_pca_df$jitter_PC1 <- HLD_Br_pca_df$PC1 + runif(nrow(HLD_Br_pca_df), -0.3, 0.3)
+HLD_Br_pca_df$jitter_PC2 <- HLD_Br_pca_df$PC2 + runif(nrow(HLD_Br_pca_df), -0.3, 0.3)
+
+ggplot(HLD_Br_pca_df, aes(x = jitter_PC1, y = jitter_PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%"))
+
+
+
+#Without jitter
+ggplot(HLD_Br_pca_df, aes(x = PC1, y = PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%")) 
+
 
 
 #### Brain Microplastics ####
@@ -177,7 +201,7 @@ dim(Br_res_s_MPD_DMSO) # 3 significant gene
 Br_res_s_MPD_DMSO
 
 #PCA
-plotPCA(rlog(MP_Br_conds_dds, blind=TRUE), intgroup="conds")
+#plotPCA(rlog(MP_Br_conds_dds, blind=TRUE), intgroup="conds")
 
 MP_Br_PCA <- rlog(MP_Br_conds_dds, blind = TRUE)
 
@@ -191,8 +215,34 @@ MP_Br_pca_res <- prcomp(t(MP_Br_top_matrix), scale. = TRUE)
 
 MP_Br_metadata <- as.data.frame(colData(MP_Br_conds_dds))
 
-MP_Br_p <- autoplot(MP_Br_pca_res, data = MP_Br_metadata, colour = "conds")
-ggplotly(MP_Br_p)
+MP_Br_pca_df <- as.data.frame(MP_Br_pca_res$x)
+
+MP_Br_pca_df$conds <- MP_Br_metadata$conds 
+
+percentVar <- round(100 * (MP_Br_pca_res$sdev)^2 / sum(MP_Br_pca_res$sdev^2), 1)
+
+#with jitter 
+
+set.seed(9)
+MP_Br_pca_df$jitter_PC1 <- MP_Br_pca_df$PC1 + runif(nrow(MP_Br_pca_df), -0.3, 0.3)
+MP_Br_pca_df$jitter_PC2 <- MP_Br_pca_df$PC2 + runif(nrow(MP_Br_pca_df), -0.3, 0.3)
+
+ggplot(MP_Br_pca_df, aes(x = jitter_PC1, y = jitter_PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%"))
+
+
+#Without jitter
+ggplot(MP_Br_pca_df, aes(x = PC1, y = PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%")) 
+
 
 #### Brain F1 ####
 
@@ -225,7 +275,7 @@ as.data.frame(tail(Br_res_s_F1, 50))
 
 
 #PCA
-plotPCA(rlog(F1_Br_conds_dds, blind=TRUE), intgroup="conds")
+#plotPCA(rlog(F1_Br_conds_dds, blind=TRUE), intgroup="conds")
 
 F1_Br_PCA <- rlog(F1_Br_conds_dds, blind = TRUE)
 
@@ -236,11 +286,31 @@ F1_Br_top_matrix <- assay(F1_Br_PCA)[F1_Br_top_500, ]
 
 F1_Br_pca_res <- prcomp(t(F1_Br_top_matrix), scale. = TRUE)
 
-
 F1_Br_metadata <- as.data.frame(colData(F1_Br_conds_dds))
 
-F1_Br_p <- autoplot(F1_Br_pca_res, data = F1_Br_metadata, colour = "conds")
-ggplotly(F1_Br_p)
+F1_Br_pca_df <- as.data.frame(F1_Br_pca_res$x)
+
+F1_Br_pca_df$conds <- F1_Br_metadata$conds 
+
+percentVar <- round(100 * (F1_Br_pca_res$sdev)^2 / sum(F1_Br_pca_res$sdev^2), 1)
+
+#with jitter 
+set.seed(9)
+F1_Br_pca_df$jitter_PC1 <- F1_Br_pca_df$PC1 + runif(nrow(F1_Br_pca_df), -0.3, 0.3)
+F1_Br_pca_df$jitter_PC2 <- F1_Br_pca_df$PC2 + runif(nrow(F1_Br_pca_df), -0.3, 0.3)
+
+ggplot(F1_Br_pca_df, aes(x = jitter_PC1, y = jitter_PC2, color = conds))  + geom_point(size = 3, alpha = 0.8)  + theme_minimal(base_size = 14) + labs(title = "",
+    x = paste0("PC1: ", percentVar[1], "%"),
+     y = paste0("PC2: ", percentVar[2], "%"))
+
+#Without jitter
+ggplot(F1_Br_pca_df, aes(x = PC1, y = PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%")) 
+
 
 #### Gonad High-Low-DMSO ####
 
@@ -283,11 +353,10 @@ Go_res_s_LD
 
 #PCA
 
-plotPCA(rlog(HLD_Go_conds_dds, blind=TRUE), intgroup="conds")
+#plotPCA(rlog(HLD_Go_conds_dds, blind=TRUE), intgroup="conds")
 
 HLD_Go_PCA <- rlog(HLD_Go_conds_dds, blind = TRUE)
 
-# Step 2: Extract top 500 most variable genes
 HLD_Go_rv <- rowVars(assay(HLD_Go_PCA))
 HLD_Go_top_500 <- order(HLD_Go_rv, decreasing = TRUE)[1:500]
 HLD_Go_top_matrix <- assay(HLD_Go_PCA)[HLD_Go_top_500, ]
@@ -296,8 +365,30 @@ HLD_Go_pca_res <- prcomp(t(HLD_Go_top_matrix), scale. = TRUE)
 
 HLD_Go_metadata <- as.data.frame(colData(HLD_Go_conds_dds))
 
-HLD_Go_p <- autoplot(HLD_Go_pca_res, data = HLD_Go_metadata, colour = "conds")
-ggplotly(HLD_Go_p)
+
+HLD_Go_pca_df <- as.data.frame(HLD_Go_pca_res$x)
+
+HLD_Go_pca_df$conds <- HLD_Go_metadata$conds 
+
+percentVar <- round(100 * (HLD_Go_pca_res$sdev)^2 / sum(HLD_Go_pca_res$sdev^2), 1)
+
+#with jitter 
+set.seed(9)
+HLD_Go_pca_df$jitter_PC1 <- HLD_Go_pca_df$PC1 + runif(nrow(HLD_Go_pca_df), -0.3, 0.3)
+HLD_Go_pca_df$jitter_PC2 <- HLD_Go_pca_df$PC2 + runif(nrow(HLD_Go_pca_df), -0.3, 0.3)
+
+ggplot(HLD_Go_pca_df, aes(x = jitter_PC1, y = jitter_PC2, color = conds))  + geom_point(size = 3, alpha = 0.8)  + theme_minimal(base_size = 14) + labs(title = "",
+   x = paste0("PC1: ", percentVar[1], "%"),
+   y = paste0("PC2: ", percentVar[2], "%"))
+
+#Without jitter
+ggplot(HLD_Go_pca_df, aes(x = PC1, y = PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%")) 
+
 
 #### Gonad Microplastics ####
 
@@ -339,11 +430,10 @@ dim(Go_res_s_MPD_DMSO) # 9 significant genes
 Go_res_s_MPD_DMSO
 
 #PCA
-plotPCA(rlog(MP_Go_conds_dds, blind=TRUE), intgroup="conds")
+#plotPCA(rlog(MP_Go_conds_dds, blind=TRUE), intgroup="conds")
 
 MP_Go_PCA <- rlog(MP_Go_conds_dds, blind = TRUE)
 
-# Step 2: Extract top 500 most variable genes
 MP_Go_rv <- rowVars(assay(MP_Go_PCA))
 MP_Go_top_500 <- order(MP_Go_rv, decreasing = TRUE)[1:500]
 MP_Go_top_matrix <- assay(MP_Go_PCA)[MP_Go_top_500, ]
@@ -351,9 +441,28 @@ MP_Go_top_matrix <- assay(MP_Go_PCA)[MP_Go_top_500, ]
 MP_Go_pca_res <- prcomp(t(MP_Go_top_matrix), scale. = TRUE)
 
 MP_Go_metadata <- as.data.frame(colData(MP_Go_conds_dds))
+MP_Go_pca_df <- as.data.frame(MP_Go_pca_res$x)
 
-MP_Go_p <- autoplot(MP_Go_pca_res, data = MP_Go_metadata, colour = "conds")
-ggplotly(MP_Go_p)
+MP_Go_pca_df$conds <- MP_Go_metadata$conds 
+
+percentVar <- round(100 * (MP_Go_pca_res$sdev)^2 / sum(MP_Go_pca_res$sdev^2), 1)
+
+#with jitter 
+set.seed(9)
+MP_Go_pca_df$jitter_PC1 <- MP_Go_pca_df$PC1 + runif(nrow(MP_Go_pca_df), -0.3, 0.3)
+MP_Go_pca_df$jitter_PC2 <- MP_Go_pca_df$PC2 + runif(nrow(MP_Go_pca_df), -0.3, 0.3)
+
+ggplot(MP_Go_pca_df, aes(x = jitter_PC1, y = jitter_PC2, color = conds))  + geom_point(size = 3, alpha = 0.8)  + theme_minimal(base_size = 14) + labs(title = "",
+    x = paste0("PC1: ", percentVar[1], "%"),
+    y = paste0("PC2: ", percentVar[2], "%"))
+
+#Without jitter
+ggplot(MP_Go_pca_df, aes(x = PC1, y = PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%")) 
 
 #### Gonad F1 ####
 
@@ -384,11 +493,10 @@ dim(Go_res_s_F1) #60 significant genes
 
 
 #PCA
-plotPCA(rlog(F1_Go_conds_dds, blind=TRUE), intgroup="conds")
+#plotPCA(rlog(F1_Go_conds_dds, blind=TRUE), intgroup="conds")
 
 F1_Go_PCA <- rlog(F1_Go_conds_dds, blind = TRUE)
 
-# Step 2: Extract top 500 most variable genes
 F1_Go_rv <- rowVars(assay(F1_Go_PCA))
 F1_Go_top_500 <- order(F1_Go_rv, decreasing = TRUE)[1:500]
 F1_Go_top_matrix <- assay(F1_Go_PCA)[F1_Go_top_500, ]
@@ -396,9 +504,29 @@ F1_Go_top_matrix <- assay(F1_Go_PCA)[F1_Go_top_500, ]
 F1_Go_pca_res <- prcomp(t(F1_Go_top_matrix), scale. = TRUE)
 
 F1_Go_metadata <- as.data.frame(colData(F1_Go_conds_dds))
+F1_Go_pca_df <- as.data.frame(F1_Go_pca_res$x)
 
-F1_Go_p <- autoplot(F1_Go_pca_res, data = F1_Go_metadata, colour = "conds")
-ggplotly(F1_Go_p)
+F1_Go_pca_df$conds <- F1_Go_metadata$conds 
+
+percentVar <- round(100 * (F1_Go_pca_res$sdev)^2 / sum(F1_Go_pca_res$sdev^2), 1)
+
+#with jitter 
+set.seed(9)
+F1_Go_pca_df$jitter_PC1 <- F1_Go_pca_df$PC1 + runif(nrow(F1_Go_pca_df), -0.3, 0.3)
+F1_Go_pca_df$jitter_PC2 <- F1_Go_pca_df$PC2 + runif(nrow(F1_Go_pca_df), -0.3, 0.3)
+
+ggplot(F1_Go_pca_df, aes(x = jitter_PC1, y = jitter_PC2, color = conds))  + geom_point(size = 3, alpha = 0.8)  + theme_minimal(base_size = 14) + labs(title = "",
+      x = paste0("PC1: ", percentVar[1], "%"),
+      y = paste0("PC2: ", percentVar[2], "%"))
+
+#Without jitter
+ggplot(F1_Go_pca_df, aes(x = PC1, y = PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%")) 
+
 
 #### Liver High-Low-DMSO ####
 
@@ -453,8 +581,28 @@ HLD_Li_pca_res <- prcomp(t(HLD_Li_top_matrix), scale. = TRUE)
 
 HLD_Li_metadata <- as.data.frame(colData(HLD_Li_conds_dds))
 
-HLD_Li_p <- autoplot(HLD_Li_pca_res, data = HLD_Li_metadata, colour = "conds")
-ggplotly(HLD_Li_p)
+HLD_Li_pca_df <- as.data.frame(HLD_Li_pca_res$x)
+
+HLD_Li_pca_df$conds <- HLD_Li_metadata$conds 
+
+percentVar <- round(100 * (HLD_Li_pca_res$sdev)^2 / sum(HLD_Li_pca_res$sdev^2), 1)
+
+#with jitter 
+set.seed(9)
+HLD_Li_pca_df$jitter_PC1 <- HLD_Li_pca_df$PC1 + runif(nrow(HLD_Li_pca_df), -0.3, 0.3)
+HLD_Li_pca_df$jitter_PC2 <- HLD_Li_pca_df$PC2 + runif(nrow(HLD_Li_pca_df), -0.3, 0.3)
+
+ggplot(HLD_Li_pca_df, aes(x = jitter_PC1, y = jitter_PC2, color = conds))  + geom_point(size = 3, alpha = 0.8)  + theme_minimal(base_size = 14) + labs(title = "",
+     x = paste0("PC1: ", percentVar[1], "%"),
+     y = paste0("PC2: ", percentVar[2], "%"))
+
+#Without jitter
+ggplot(HLD_Li_pca_df, aes(x = PC1, y = PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%")) 
 
 #### Liver Microplastics ####
 
@@ -492,7 +640,7 @@ Li_res_s_MPD_DMSO <- Li_res_MPD_DMSO[Li_res_MPD_DMSO$padj <= 0.05 & (Li_res_MPD_
 dim(Li_res_s_MPD_DMSO) # 0 significant gene
 
 #PCA
-plotPCA(rlog(MP_Li_conds_dds, blind=TRUE), intgroup="conds")
+#plotPCA(rlog(MP_Li_conds_dds, blind=TRUE), intgroup="conds")
 
 MP_Li_PCA <- rlog(MP_Li_conds_dds, blind = TRUE)
 
@@ -505,8 +653,28 @@ MP_Li_pca_res <- prcomp(t(MP_Li_top_matrix), scale. = TRUE)
 
 MP_Li_metadata <- as.data.frame(colData(MP_Li_conds_dds))
 
-MP_Li_p <- autoplot(MP_Li_pca_res, data = MP_Li_metadata, colour = "conds")
-ggplotly(MP_Li_p)
+MP_Li_pca_df <- as.data.frame(MP_Li_pca_res$x)
+
+MP_Li_pca_df$conds <- MP_Li_metadata$conds 
+
+percentVar <- round(100 * (MP_Li_pca_res$sdev)^2 / sum(MP_Li_pca_res$sdev^2), 1)
+
+#with jitter 
+set.seed(9)
+MP_Li_pca_df$jitter_PC1 <- MP_Li_pca_df$PC1 + runif(nrow(MP_Li_pca_df), -0.3, 0.3)
+MP_Li_pca_df$jitter_PC2 <- MP_Li_pca_df$PC2 + runif(nrow(MP_Li_pca_df), -0.3, 0.3)
+
+ggplot(MP_Li_pca_df, aes(x = jitter_PC1, y = jitter_PC2, color = conds))  + geom_point(size = 3, alpha = 0.8)  + theme_minimal(base_size = 14) + labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%"))
+
+#Without jitter
+ggplot(MP_Li_pca_df, aes(x = PC1, y = PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%")) 
 
 #### F1 Liver ####
 
@@ -534,11 +702,10 @@ Li_res_s_F1 <- Li_res_F1[Li_res_F1$padj <= 0.05 & (Li_res_F1$log2FoldChange > 1 
 dim(Li_res_s_F1) #52 significant genes
 
 #PCA
-plotPCA(rlog(F1_Li_conds_dds, blind=TRUE), intgroup="conds")
+#plotPCA(rlog(F1_Li_conds_dds, blind=TRUE), intgroup="conds")
 
 F1_Li_PCA <- rlog(F1_Li_conds_dds, blind = TRUE)
 
-# Step 2: Extract top 500 most variable genes
 F1_Li_rv <- rowVars(assay(F1_Li_PCA))
 F1_Li_top_500 <- order(F1_Li_rv, decreasing = TRUE)[1:500]
 F1_Li_top_matrix <- assay(F1_Li_PCA)[F1_Li_top_500, ]
@@ -547,8 +714,29 @@ F1_Li_pca_res <- prcomp(t(F1_Li_top_matrix), scale. = TRUE)
 
 F1_Li_metadata <- as.data.frame(colData(F1_Li_conds_dds))
 
-F1_Li_p <- autoplot(F1_Li_pca_res, data = F1_Li_metadata, colour = "conds")
-ggplotly(F1_Li_p)
+
+F1_Li_pca_df <- as.data.frame(F1_Li_pca_res$x)
+
+F1_Li_pca_df$conds <- F1_Li_metadata$conds 
+
+percentVar <- round(100 * (F1_Li_pca_res$sdev)^2 / sum(F1_Li_pca_res$sdev^2), 1)
+
+#with jitter 
+set.seed(9)
+F1_Li_pca_df$jitter_PC1 <- F1_Li_pca_df$PC1 + runif(nrow(F1_Li_pca_df), -0.3, 0.3)
+F1_Li_pca_df$jitter_PC2 <- F1_Li_pca_df$PC2 + runif(nrow(F1_Li_pca_df), -0.3, 0.3)
+
+ggplot(F1_Li_pca_df, aes(x = jitter_PC1, y = jitter_PC2, color = conds))  + geom_point(size = 3, alpha = 0.8)  + theme_minimal(base_size = 14) + labs(title = "",
+      x = paste0("PC1: ", percentVar[1], "%"),
+      y = paste0("PC2: ", percentVar[2], "%"))
+
+#Without jitter
+ggplot(F1_Li_pca_df, aes(x = PC1, y = PC2, color = conds)) +
+  geom_point(size = 3, alpha = 0.8) +
+  theme_minimal(base_size = 14) +
+  labs(title = "",
+       x = paste0("PC1: ", percentVar[1], "%"),
+       y = paste0("PC2: ", percentVar[2], "%")) 
 
 #Remove metadata
 rm(HLD_Li_metadata, HLD_metadata, HLD_Go_metadata, MP_Br_metadata, MP_Go_metadata, MP_Li_metadata, F1_Br_metadata, F1_Go_metadata, F1_Li_metadata)
