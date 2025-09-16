@@ -33,7 +33,7 @@ Br_res_s_MPD_DMSO
 
 ### Gonad High_Low-DMSO ####
 
-#In Gonad High DEHP vs Low DEHP we had 5032 significant DEGs.
+#In Gonad High DEHP vs Low DEHP we had 5032 significant DEGs
 
 Go_HL_sig_ordered <- Go_res_s_HL[order(-abs(Go_res_s_HL$log2FoldChange), Go_res_s_HL$log2FoldChange), ]
 Go_HL_sig_ordered <- as.data.frame(Go_HL_sig_ordered)
@@ -44,10 +44,9 @@ write.csv(as.data.frame(Go_HL_sig_ordered), file = "Significant_genes/Log_ordere
 #In Gonad High DEHP vs DMSO control we had 5184 significant DEGs
 #What are the topmost Log fold change - with sig p-value
 
-Go_HD_sig_ordered <- Go_res_HD[Go_res_HD$padj <= 0.05 & abs(Go_res_HD$log2FoldChange) > 1, ]
 Go_HD_sig_ordered <- Go_res_s_HD[order(-abs(Go_res_s_HD$log2FoldChange), Go_res_s_HD$log2FoldChange), ]
-View(Go_HD_sig_ordered)
 Go_HD_sig_ordered <- as.data.frame(Go_HD_sig_ordered)
+View(Go_HD_sig_ordered)
 
 write.csv(as.data.frame(Go_HD_sig_ordered), file = "Significant_genes/Log_ordered_sets/Go_HD_sig_ordered")
 
@@ -88,20 +87,20 @@ Go_res_s_LD
 
 #In Gonad Microplastics control vs Microplastic+DEHP there were 1517 DEGs
 
-Go_MP_MPD_sig_ordered <- Go_res_MP_MPD[Go_res_MP_MPD$padj <= 0.05 & abs(Go_res_MP_MPD$log2FoldChange) > 1, ]
 Go_MP_MPD_sig_ordered <- Go_res_s_MP_MPD[order(-abs(Go_res_s_MP_MPD$log2FoldChange), Go_res_s_MP_MPD$log2FoldChange), ]
 Go_MP_MPD_sig_ordered <- as.data.frame(Go_MP_MPD_sig_ordered)
 View(Go_MP_MPD_sig_ordered)
+dim(Go_MP_MPD_sig_ordered)
 
 write.csv(as.data.frame(Go_MP_MPD_sig_ordered), file = "Significant_genes/Log_ordered_sets/Go_MP_MPD_sig_ordered")
 
 
 #In Gonad Microplastics control vs DMSO control there were 5758 DEGs
 
-Go_MP_DMSO_sig_ordered <- Go_res_MP_DMSO[Go_res_MP_DMSO$padj <= 0.05 & abs(Go_res_MP_DMSO$log2FoldChange) > 1, ]
 Go_MP_DMSO_sig_ordered <- Go_res_s_MP_DMSO[order(-abs(Go_res_s_MP_DMSO$log2FoldChange), Go_res_s_MP_DMSO$log2FoldChange), ]
 Go_MP_DMSO_sig_ordered <- as.data.frame(Go_MP_DMSO_sig_ordered)
 View(Go_MP_DMSO_sig_ordered)
+dim(Go_MP_DMSO_sig_ordered)
 
 write.csv(as.data.frame(Go_MP_DMSO_sig_ordered), file = "Significant_genes/Log_ordered_sets/Go_MP_DMSO_sig_ordered")
 
@@ -144,12 +143,14 @@ ggVennDiagram(Go_MP_SL, label_alpha = 0, label = "count") +
 
 #In liver Low vs DMSO there were 415 significant DEGs
 
-Li_LD_sig_ordered <- Li_res_s_LD[Li_res_LD$padj <= 0.05 & abs(Li_res_LD$log2FoldChange) > 1, ]
 Li_LD_sig_ordered <- Li_res_s_LD[order(-abs(Li_res_s_LD$log2FoldChange), Li_res_s_LD$log2FoldChange), ]
 Li_LD_sig_ordered <- as.data.frame(Li_LD_sig_ordered)
 View(Li_LD_sig_ordered)
+dim(Li_LD_sig_ordered)
 
 write.csv(as.data.frame(Li_LD_sig_ordered), file = "Significant_genes/Log_ordered_sets/Li_LD_sig_ordered")
+
+
 
 
 Li_HLD_SL <- list(HighvLow=rownames(Li_res_s_HL), HighvDMSO=rownames(Li_res_s_HD), LowvDMSO=rownames(Li_res_s_LD))
@@ -167,8 +168,9 @@ ggVennDiagram(Li_HLD_SL, label_alpha = 0, label = "count") +
 ### Brain F1 vs Brain F0 ####
 
 Br_F1_sig_ordered <- Br_res_s_F1[order(-abs(Br_res_s_F1$log2FoldChange), Br_res_s_F1$log2FoldChange), ]
-Br_F1_sig_ordered <- as.data.frame(Li_LD_sig_ordered)
+Br_F1_sig_ordered <- as.data.frame(Br_F1_sig_ordered)
 View(Br_F1_sig_ordered)
+dim(Br_F1_sig_ordered)
 
 write.csv(as.data.frame(Br_F1_sig_ordered), file = "Significant_genes/Log_ordered_sets/Br_F1_sig_ordered")
 
@@ -185,6 +187,7 @@ ggVennDiagram(Br_F1_SL, label_alpha = 0, label = "count") +
 Go_F1_sig_ordered <- Go_res_s_F1[order(-abs(Go_res_s_F1$log2FoldChange), Go_res_s_F1$log2FoldChange), ]
 Go_F1_sig_ordered <- as.data.frame(Go_F1_sig_ordered)
 View(Go_F1_sig_ordered)
+dim(Go_F1_sig_ordered)
 
 write.csv(as.data.frame(Go_F1_sig_ordered), file = "Significant_genes/Log_ordered_sets/Go_F1_sig_ordered")
 
@@ -208,6 +211,7 @@ head(GoF1F0_overlap, 10)
 Li_F1_sig_ordered <- Li_res_s_F1[order(-abs(Li_res_s_F1$log2FoldChange), Li_res_s_F1$log2FoldChange), ]
 Li_F1_sig_ordered <- as.data.frame(Li_F1_sig_ordered)
 View(Li_F1_sig_ordered)
+dim(Li_F1_sig_ordered)
 
 write.csv(as.data.frame(Li_F1_sig_ordered), file = "Significant_genes/Log_ordered_sets/Li_F1_sig_ordered")
 
