@@ -14,8 +14,7 @@ library(ggplot2)
 #In Brain High vs DMSO we had one significant DEG, this was ttc6, which was upregulated 5.2x in the High DEHP exposure.
 head(Br_res_s_HD)
 
-#In Brain Low vs DMSO we had one significant DEG, this was hyal3, which was upregulated 2.6x in the Low DEHP exposure
-head(Br_res_s_LD)
+
 
 ### Brain Microplastics ####
 
@@ -25,9 +24,8 @@ head(Br_res_s_LD)
 Br_res_s_MP_DMSO
 
 
-#In Brain Microplastics + DEHP vs DMSO control we had 3 significant DEGs, these were si:dkey-32n7.4, krt5 and krt5_1
+#In Brain Microplastics + DEHP vs DMSO control we had 1 significant DEGs, these were si:dkey-32n7.4, krt5 and krt5_1
 #si:dkey-32n7.4 which was upregualted 2.8x  in Microplastics + DEHP
-# krt5 and krt5_1 are the same feature/gene, it is downregulated 2.0x in Microplastics +DEHP
 Br_res_s_MPD_DMSO
 
 
@@ -74,9 +72,8 @@ unique_HL <- Go_res_s_HL[rownames(Go_res_s_HL) %in% genes_unique_HL, ]
 # Unique to High vs DMSO
 unique_HD <- Go_res_s_HD[rownames(Go_res_s_HD) %in% genes_unique_HD, ]
 
-#In Gonad Low DEHP vs DMSO control we had 3 DEGs. These were acbd5b, kifap3b and ttpa
+#In Gonad Low DEHP vs DMSO control we had 2 DEGs. These were acbd5b and ttpa
 #acbd5b was upregulated 1.5x in High
-#kifap3b was downregulated 0.84x in High
 #ttpa was downregulated 2.17x in High
 Go_res_s_LD
 
@@ -161,7 +158,7 @@ ggVennDiagram(Li_HLD_SL, label_alpha = 0, label = "count") +
   theme(text = element_text(size = 10)) 
 
 
-#410 unique DEGs in Low vs DMSO
+#430 unique DEGs in Low vs DMSO
 #
 
 
@@ -233,6 +230,7 @@ venn(Test_Li_F1_SL)
 
 # BF1
 upregulated_BF1 <- Br_res_s_F1[Br_res_s_F1$log2FoldChange > 0, ]
+dim(upregulated_BF1)
 r_upregulated_BF1 <- upregulated_BF1
 # Calculate ranking metric
 r_upregulated_BF1$ranking_metric <- -log10(r_upregulated_BF1$padj + 1e-10) * sign(r_upregulated_BF1$log2FoldChange)
@@ -241,10 +239,12 @@ r_upregulated_BF1 <- r_upregulated_BF1[order(-r_upregulated_BF1$ranking_metric),
 # Extract gene IDs
 r_upregulated_BF1 <- rownames(r_upregulated_BF1)
 
-write.table(r_upregulated_BF1, file = "Significant genes/Upregulated/r_upregulated_BF1.txt", 
+
+write.table(r_upregulated_BF1, file = "Significant_genes/Upregulated/r_upregulated_BF1.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 Downregulated_BF1 <- Br_res_s_F1[Br_res_s_F1$log2FoldChange < 0, ]
+dim(Downregulated_BF1)
 r_Downregulated_BF1 <- Downregulated_BF1
 # Calculate ranking metric
 r_Downregulated_BF1$ranking_metric <- -log10(r_Downregulated_BF1$padj + 1e-10) * sign(r_Downregulated_BF1$log2FoldChange)
@@ -253,12 +253,13 @@ r_Downregulated_BF1 <- r_Downregulated_BF1[order(-r_Downregulated_BF1$ranking_me
 # Extract gene IDs
 r_Downregulated_BF1 <- rownames(r_Downregulated_BF1)
 
-write.table(r_Downregulated_BF1, file = "Significant genes/Downregulated/r_Downregulated_BF1.txt", 
+write.table(r_Downregulated_BF1, file = "Significant_genes/Downregulated/r_Downregulated_BF1.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 
 # HD
 upregulated_HD <- Go_res_s_HD[Go_res_s_HD$log2FoldChange > 0, ]
+dim(upregulated_HD)
 r_upregulated_HD <-upregulated_HD
 
 # Calculate ranking metric
@@ -268,11 +269,12 @@ r_upregulated_HD <- r_upregulated_HD[order(-r_upregulated_HD$ranking_metric), ]
 # Extract gene IDs
 r_upregulated_HD <- rownames(r_upregulated_HD)
 
-write.table(r_upregulated_HD, file = "Significant genes/Upregulated/r_upregulated_HD.txt", 
+write.table(r_upregulated_HD, file = "Significant_genes/Upregulated/r_upregulated_HD.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 
 Downregulated_HD <- Go_res_s_HD[Go_res_s_HD$log2FoldChange < 0, ]
+dim(Downregulated_HD)
 r_Downregulated_HD <- Downregulated_HD
 
 # Calculate ranking metric
@@ -282,12 +284,13 @@ r_Downregulated_HD <- r_Downregulated_HD[order(-r_Downregulated_HD$ranking_metri
 # Extract gene IDs
 r_Downregulated_HD <- rownames(r_Downregulated_HD)
 
-write.table(r_Downregulated_HD, file = "Significant genes/Downregulated/r_Downregulated_HD.txt", 
+write.table(r_Downregulated_HD, file = "Significant_genes/Downregulated/r_Downregulated_HD.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 
 # GF1
 upregulated_GF1 <- Go_res_s_F1[Go_res_s_F1$log2FoldChange > 0, ]
+dim(upregulated_GF1)
 r_upregulated_GF1 <- upregulated_GF1
 
 # Calculate ranking metric
@@ -297,11 +300,12 @@ r_upregulated_GF1 <- r_upregulated_GF1[order(-r_upregulated_GF1$ranking_metric),
 # Extract gene IDs
 r_upregulated_GF1 <- rownames(r_upregulated_GF1)
 
-write.table(r_upregulated_GF1, file = "Significant genes/Upregulated/r_upregulated_GF1.txt", 
+write.table(r_upregulated_GF1, file = "Significant_genes/Upregulated/r_upregulated_GF1.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 
 Downregulated_GF1 <- Go_res_s_F1[Go_res_s_F1$log2FoldChange < 0, ]
+dim(Downregulated_GF1)
 r_Downregulated_GF1 <- Downregulated_GF1
 
 # Calculate ranking metric
@@ -311,11 +315,12 @@ r_Downregulated_GF1 <- r_Downregulated_GF1[order(-r_Downregulated_GF1$ranking_me
 # Extract gene IDs
 r_Downregulated_GF1 <- rownames(r_Downregulated_GF1)
 
-write.table(r_Downregulated_GF1, file = "Significant genes/Downregulated/r_Downregulated_GF1.txt", 
+write.table(r_Downregulated_GF1, file = "Significant_genes/Downregulated/r_Downregulated_GF1.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 # LLD
 upregulated_LLD <- Li_res_s_LD[Li_res_s_LD$log2FoldChange > 0, ]
+dim(upregulated_LLD)
 r_upregulated_LLD <- upregulated_LLD
 
 # Calculate ranking metric
@@ -325,11 +330,12 @@ r_upregulated_LLD <- r_upregulated_LLD[order(-r_upregulated_LLD$ranking_metric),
 # Extract gene IDs
 r_upregulated_LLD <- rownames(r_upregulated_LLD)
 
-write.table(r_upregulated_LLD, file = "Significant genes/Upregulated/r_upregulated_LLD.txt", 
+write.table(r_upregulated_LLD, file = "Significant_genes/Upregulated/r_upregulated_LLD.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 
 Downregulated_LLD <- Li_res_s_LD[Li_res_s_LD$log2FoldChange < 0, ]
+dim(Downregulated_LLD)
 r_Downregulated_LLD <- Downregulated_LLD
 
 # Calculate ranking metric
@@ -339,11 +345,12 @@ r_Downregulated_LLD <- r_Downregulated_LLD[order(-r_Downregulated_LLD$ranking_me
 # Extract gene IDs
 r_Downregulated_LLD <- rownames(r_Downregulated_LLD)
 
-write.table(r_Downregulated_LLD, file = "Significant genes/Downregulated/r_Downregulated_LLD.txt", 
+write.table(r_Downregulated_LLD, file = "Significant_genes/Downregulated/r_Downregulated_LLD.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 # LF1 
 upregulated_LF1 <- Li_res_s_F1[Li_res_s_F1$log2FoldChange > 0, ]
+dim(upregulated_LF1)
 r_upregulated_LF1 <- upregulated_LF1
 
 # Calculate ranking metric
@@ -353,10 +360,11 @@ r_upregulated_LF1 <- r_upregulated_LF1[order(-r_upregulated_LF1$ranking_metric),
 # Extract gene IDs
 r_upregulated_LF1 <- rownames(r_upregulated_LF1)
 
-write.table(r_upregulated_LF1, file = "Significant genes/Upregulated/r_upregulated_LF1.txt", 
+write.table(r_upregulated_LF1, file = "Significant_genes/Upregulated/r_upregulated_LF1.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 Downregulated_LF1 <- Li_res_s_F1[Li_res_s_F1$log2FoldChange < 0, ]
+dim(Downregulated_LF1)
 r_Downregulated_LF1 <- Downregulated_LF1
 
 # Calculate ranking metric
@@ -366,11 +374,12 @@ r_Downregulated_LF1 <- r_Downregulated_LF1[order(-r_Downregulated_LF1$ranking_me
 # Extract gene IDs
 r_Downregulated_LF1 <- rownames(r_Downregulated_LF1)
 
-write.table(r_Downregulated_LF1, file = "Significant genes/Downregulated/r_Downregulated_LF1.txt", 
+write.table(r_Downregulated_LF1, file = "Significant_genes/Downregulated/r_Downregulated_LF1.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 # GMPDM
 upregulated_GMPDM <- Go_res_s_MP_DMSO[Go_res_s_MP_DMSO$log2FoldChange > 0, ]
+dim(upregulated_GMPDM)
 r_upregulated_GMPDM <- upregulated_GMPDM
 
 # Calculate ranking metric
@@ -380,10 +389,11 @@ r_upregulated_GMPDM <- r_upregulated_GMPDM[order(-r_upregulated_GMPDM$ranking_me
 # Extract gene IDs
 r_upregulated_GMPDM <- rownames(r_upregulated_GMPDM)
 
-write.table(r_upregulated_GMPDM, file = "Significant genes/Upregulated/r_upregulated_GMPDM.txt", 
+write.table(r_upregulated_GMPDM, file = "Significant_genes/Upregulated/r_upregulated_GMPDM.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 Downregulated_GMPDM <- Go_res_s_MP_DMSO[Go_res_s_MP_DMSO$log2FoldChange < 0, ]
+dim(Downregulated_GMPDM)
 r_Downregulated_GMPDM <- Downregulated_GMPDM
 
 # Calculate ranking metric
@@ -393,7 +403,7 @@ r_Downregulated_GMPDM <- r_Downregulated_GMPDM[order(-r_Downregulated_GMPDM$rank
 # Extract gene IDs
 r_Downregulated_GMPDM <- rownames(r_Downregulated_GMPDM)
 
-write.table(r_Downregulated_GMPDM, file = "Significant genes/Downregulated/r_Downregulated_GMPDM.txt", 
+write.table(r_Downregulated_GMPDM, file = "Significant_genes/Downregulated/r_Downregulated_GMPDM.txt", 
             quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 

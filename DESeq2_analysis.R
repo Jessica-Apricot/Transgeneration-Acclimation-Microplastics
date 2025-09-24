@@ -116,8 +116,8 @@ Br_res_s_HD
 Br_res_s_LD <- Br_res_LD[
   Br_res_LD$padj <= 0.05 & 
     (Br_res_LD$log2FoldChange > 1 | Br_res_LD$log2FoldChange < -1), ]
-dim(Br_res_s_LD) # 1 significant
-Br_res_s_LD
+dim(Br_res_s_LD) # 0 significant
+
 
 #PCA
 #plotPCA(rlog(HLD_Br_conds_dds, blind=TRUE), intgroup="conds")
@@ -197,7 +197,7 @@ Br_res_s_MP_DMSO <- Br_res_MP_DMSO[Br_res_MP_DMSO$padj <= 0.05 & (Br_res_MP_DMSO
 dim(Br_res_s_MP_DMSO) #2 significant genes
 Br_res_s_MP_DMSO
 Br_res_s_MPD_DMSO <- Br_res_MPD_DMSO[Br_res_MPD_DMSO$padj <= 0.05 & (Br_res_MPD_DMSO$log2FoldChange >1 | Br_res_MPD_DMSO$log2FoldChange < -1), ]
-dim(Br_res_s_MPD_DMSO) # 3 significant gene
+dim(Br_res_s_MPD_DMSO) # 1 significant gene
 Br_res_s_MPD_DMSO
 
 #PCA
@@ -269,9 +269,8 @@ Br_res_s_F1 <- Br_res_F1[
   Br_res_F1$padj <= 0.05 & 
     (Br_res_F1$log2FoldChange > 1 | Br_res_F1$log2FoldChange < -1), 
 ]
-dim(Br_res_s_F1) #59 significant genes
-#106 genes with a p-value less than 0.05
-as.data.frame(tail(Br_res_s_F1, 50))
+dim(Br_res_s_F1) #62 significant genes
+
 
 
 #PCA
@@ -341,15 +340,15 @@ Go_res_HD <- na.omit(Go_res_HD)
 Go_res_LD <- na.omit(Go_res_LD)
 #Significant p-values
 Go_res_s_HL <- Go_res_HL[Go_res_HL$padj <= 0.05 & (Go_res_HL$log2FoldChange > 1 | Go_res_HL$log2FoldChange < -1),]
-dim(Go_res_s_HL) #4507 significant genes
-#5032 genes with a p-value less than 0.05
+dim(Go_res_s_HL) #4550 significant genes
+
 Go_res_s_HD <- Go_res_HD[Go_res_HD$padj <= 0.05 & (Go_res_HD$log2FoldChange > 1 | Go_res_HD$log2FoldChange < -1),]
-dim(Go_res_s_HD) #4820 significant genes
-#5184 genes with a p-value less than 0.05
+dim(Go_res_s_HD) #4843 significant genes
+
 Go_res_s_LD <- Go_res_LD[Go_res_LD$padj <= 0.05 & (Go_res_LD$log2FoldChange >1 | Go_res_LD$log2FoldChange < -1),]
 dim(Go_res_s_LD) # 2 significant gene
 Go_res_s_LD
-# 3 genes with a p-value above 0.05
+
 
 #PCA
 
@@ -420,13 +419,13 @@ Go_res_MP_DMSO <- na.omit(Go_res_MP_DMSO)
 Go_res_MPD_DMSO <- na.omit(Go_res_MPD_DMSO)
 #Significant p-values
 Go_res_s_MP_MPD <- Go_res_MP_MPD[Go_res_MP_MPD$padj <= 0.05 & (Go_res_MP_MPD$log2FoldChange > 1 | Go_res_MP_MPD$log2FoldChange < -1),]
-dim(Go_res_s_MP_MPD) #1478 significant genes
-#1517 genes with a p-value less than 0.05
+dim(Go_res_s_MP_MPD) #1493 significant genes
+
 Go_res_s_MP_DMSO <-Go_res_MP_DMSO[Go_res_MP_DMSO$padj <= 0.05 & (Go_res_MP_DMSO$log2FoldChange >1 | Go_res_MP_DMSO$log2FoldChange < -1), ]
-dim(Go_res_s_MP_DMSO) #5388 significant genes
-#5758 genes with a p-value less than 0.05
+dim(Go_res_s_MP_DMSO) #5503 significant genes
+
 Go_res_s_MPD_DMSO <- Go_res_MPD_DMSO[Go_res_MPD_DMSO$padj <= 0.05 & (Go_res_MPD_DMSO$log2FoldChange > 1| Go_res_MPD_DMSO$log2FoldChange < -1), ]
-dim(Go_res_s_MPD_DMSO) # 9 significant genes
+dim(Go_res_s_MPD_DMSO) # 8 significant genes
 Go_res_s_MPD_DMSO
 
 #PCA
@@ -488,8 +487,8 @@ Go_res_F1 <- results(F1_Go_conds_dds, contrast = c("conds", "High", "DMSO"))
 Go_res_F1 <- na.omit(Go_res_F1)
 #Significant p-values
 Go_res_s_F1 <- Go_res_F1[Go_res_F1$padj <= 0.05 & (Go_res_F1$log2FoldChange > 1 | Go_res_F1$log2FoldChange < -1), ]
-dim(Go_res_s_F1) #60 significant genes
-#71 genes with a p-value less than 0.05
+dim(Go_res_s_F1) #57 significant genes
+
 
 
 #PCA
@@ -557,13 +556,15 @@ Li_res_HD <- na.omit(Li_res_HD)
 Li_res_LD <- na.omit(Li_res_LD)
 #Significant p-values
 Li_res_s_HL <- Li_res_HL[Li_res_HL$padj <= 0.05 & (Li_res_HL$log2FoldChange > 1 | Li_res_HL$log2FoldChange < -1), ]
-dim(Li_res_s_HL) #4 significant genes
+dim(Li_res_s_HL) #7 significant genes
+
 Li_res_s_HD <-Li_res_HD[Li_res_HD$padj <= 0.05 & (Li_res_HD$log2FoldChange > 1 | Li_res_HD$log2FoldChange < -1), ]
-dim(Li_res_s_HD) #2 significant genes
+dim(Li_res_s_HD) #0 significant genes
 Li_res_s_HD
+
 Li_res_s_LD <- Li_res_LD[Li_res_LD$padj <= 0.05 & (Li_res_LD$log2FoldChange > 1 | Li_res_LD$log2FoldChange < -1), ]
-dim(Li_res_s_LD) #414 significant genes
-# 415 genes with a p-value less than 0.05
+dim(Li_res_s_LD) #436 significant genes
+
 
 
 #PCA
@@ -634,8 +635,10 @@ Li_res_MPD_DMSO <- na.omit(Li_res_MPD_DMSO)
 #Significant p-values
 Li_res_s_MP_MPD <- Li_res_MP_MPD[Li_res_MP_MPD$padj <= 0.05 & (Li_res_MP_MPD$log2FoldChange > 1 | Li_res_MP_MPD$log2FoldChange < -1), ]
 dim(Li_res_s_MP_MPD) #0 significant genes
+
 Li_res_s_MP_DMSO <-Li_res_MP_DMSO[Li_res_MP_DMSO$padj <= 0.05 & (Li_res_MP_DMSO$log2FoldChange > 1 | Li_res_MP_DMSO$log2FoldChange < -1), ]
 dim(Li_res_s_MP_DMSO) #0 significant genes
+
 Li_res_s_MPD_DMSO <- Li_res_MPD_DMSO[Li_res_MPD_DMSO$padj <= 0.05 & (Li_res_MPD_DMSO$log2FoldChange >1 | Li_res_MPD_DMSO$log2FoldChange < -1), ]
 dim(Li_res_s_MPD_DMSO) # 0 significant gene
 
@@ -819,3 +822,4 @@ write.table(rownames(Go_res_F1), file = "All genes text/Go_res_F1.txt",quote = F
 write.table(rownames(Li_res_LD), file = "All genes text/Li_res_LD.txt",quote = FALSE, row.names = FALSE, col.names = FALSE)
 
 write.table(rownames(Go_res_MP_DMSO), file = "All genes text/Go_res_MP_DMSO.txt",quote = FALSE, row.names = FALSE, col.names = FALSE)
+
