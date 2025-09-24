@@ -52,7 +52,7 @@ count_data <- cbind(gene_info, counts)
 
 write.table(gene_info, file = "gene_info.tsv", 
             sep = "\t", quote = FALSE, row.names = FALSE)
-write.csv(count_data, file = "C:/Users/Jessi/Documents/Microplastics_RNA-seq/Results/count_data.csv", row.names = FALSE)
+write.csv(count_data, file = "C:/Users/Jessi/Documents/Microplastics_RNA-seq/count_data.csv", row.names = FALSE)
 
 
 #Renaming Samples
