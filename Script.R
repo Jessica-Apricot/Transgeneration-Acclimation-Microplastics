@@ -76,7 +76,7 @@ rm(summary_files, brain_dir, gonad_dir, liver_dir, bam_files, gtf_file, bam_file
 
 zero <- rownames(All_Counts)[rowSums(All_Counts == 0) == ncol(All_Counts)]
 length(zero)
-#WE have 2484 with zero expression across all samples. 
+#WE have 2186 with zero expression across all samples. 
 colSums(All_Counts)
 
 

@@ -63,14 +63,14 @@ ggVennDiagram(Go_HLD_SL, label_alpha = 0, label = "count") +
 #1097 DEGs unique to HighvsLow
 
 #this doesnt work, i 'might' fix later
-shared_HL <- Go_res_s_HL[rownames(Go_res_s_HL) %in% genes_shared, ]
-shared_HD <- Go_res_s_HD[rownames(Go_res_s_HD) %in% genes_shared, ]
+#shared_HL <- Go_res_s_HL[rownames(Go_res_s_HL) %in% genes_shared, ]
+#shared_HD <- Go_res_s_HD[rownames(Go_res_s_HD) %in% genes_shared, ]
 
 # Unique to High vs Low
-unique_HL <- Go_res_s_HL[rownames(Go_res_s_HL) %in% genes_unique_HL, ]
+#unique_HL <- Go_res_s_HL[rownames(Go_res_s_HL) %in% genes_unique_HL, ]
 
 # Unique to High vs DMSO
-unique_HD <- Go_res_s_HD[rownames(Go_res_s_HD) %in% genes_unique_HD, ]
+#unique_HD <- Go_res_s_HD[rownames(Go_res_s_HD) %in% genes_unique_HD, ]
 
 #In Gonad Low DEHP vs DMSO control we had 2 DEGs. These were acbd5b and ttpa
 #acbd5b was upregulated 1.5x in High
