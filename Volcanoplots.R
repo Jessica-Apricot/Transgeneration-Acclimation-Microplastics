@@ -242,6 +242,7 @@ ggplot(volc_Br_MPD_DMSO, aes(x = logFC, y = negLogPval, color = category)) +
 
 
 ### Brain F1 ####
+
 #plotting df
 volc_Br_F1 <- data.frame(
   logFC = Br_res_F1$log2FoldChange,
@@ -287,6 +288,7 @@ ggplot(volc_Br_F1, aes(x = logFC, y = negLogPval, color = category)) +
     plot.title = element_blank(),
     plot.subtitle = element_blank()
   )
+
 
 
 ### Gonad High-Low ####
