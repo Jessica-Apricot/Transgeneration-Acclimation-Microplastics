@@ -48,6 +48,20 @@ View(Go_HD_sig_ordered)
 
 write.csv(as.data.frame(Go_HD_sig_ordered), file = "Significant_genes/Log_ordered_sets/Go_HD_sig_ordered")
 
+Go_LD_sig_ordered <- Go_res_s_LD[order(-abs(Go_res_s_LD$log2FoldChange), Go_res_s_LD$log2FoldChange), ]
+Go_LD_sig_ordered <- as.data.frame(Go_LD_sig_ordered)
+View(Go_LD_sig_ordered)
+
+Go_HL_sig_ordered$Condition <- "HL"
+Go_HD_sig_ordered$Condition <- "HD"
+Go_LD_sig_ordered$Condition <- "LD"
+
+# Bind all together
+Go_all_combined <- rbind(Go_HL_sig_ordered, Go_HD_sig_ordered, Go_LD_sig_ordered)
+View(Go_all_combined)
+
+
+
 #Because there are so many genes we will make a venn diagram to see the overlap
 Go_HLD_SL <- list(HighvLow=rownames(Go_res_s_HL), HighvDMSO=rownames(Go_res_s_HD), LowvDMSO=rownames(Go_res_s_LD)) 
 
@@ -84,12 +98,12 @@ Go_res_s_LD
 
 #In Gonad Microplastics control vs Microplastic+DEHP there were 1517 DEGs
 
-Go_MP_MPD_sig_ordered <- Go_res_s_MP_MPD[order(-abs(Go_res_s_MP_MPD$log2FoldChange), Go_res_s_MP_MPD$log2FoldChange), ]
-Go_MP_MPD_sig_ordered <- as.data.frame(Go_MP_MPD_sig_ordered)
-View(Go_MP_MPD_sig_ordered)
-dim(Go_MP_MPD_sig_ordered)
+Go_MPD_DMSO_sig_ordered <- Go_res_s_MPD_DMSO[order(-abs(Go_res_s_MPD_DMSO$log2FoldChange), Go_res_s_MPD_DMSO$log2FoldChange), ]
+Go_MPD_DMSO_sig_ordered <- as.data.frame(Go_MPD_DMSO_sig_ordered)
+View(Go_MPD_DMSO_sig_ordered)
+dim(Go_MPD_DMSO_sig_ordered)
 
-write.csv(as.data.frame(Go_MP_MPD_sig_ordered), file = "Significant_genes/Log_ordered_sets/Go_MP_MPD_sig_ordered")
+write.csv(as.data.frame(Go_MPD_DMSO_sig_ordered), file = "Significant_genes/Log_ordered_sets/Go_MPD_DMSO_sig_ordered")
 
 
 #In Gonad Microplastics control vs DMSO control there were 5758 DEGs
