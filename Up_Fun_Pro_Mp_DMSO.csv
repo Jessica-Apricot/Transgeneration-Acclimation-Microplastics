@@ -1,0 +1,42 @@
+term,padj,category
+protein binding,6.81E-08,Function
+ionotropic glutamate receptor activity,8.14E-05,Function
+signaling receptor binding,2.13E-04,Function
+glutamate receptor activity,2.34E-04,Function
+RNA polymerase II proximal promoter sequence-specific DNA binding,2.69E-04,Function
+transcription regulator activity,2.35E-04,Function
+molecular function regulator,2.55E-04,Function
+AMPA glutamate receptor activity,4.09E-04,Function
+proximal promoter sequence-specific DNA binding,3.66E-04,Function
+ion gated channel activity,4.47E-04,Function
+DNA-binding transcription factor activity,5.07E-04,Function
+transmitter-gated channel activity,6.27E-04,Function
+transmitter-gated ion channel activity,5.79E-04,Function
+gated channel activity,6.96E-04,Function
+ion channel activity,1.16E-03,Function
+"phosphotransferase activity, alcohol group as acceptor",1.12E-03,Function
+substrate-specific channel activity,1.45E-03,Function
+extracellular ligand-gated ion channel activity,1.40E-03,Function
+neurotransmitter receptor activity,2.16E-03,Function
+inorganic molecular entity transmembrane transporter activity,3.30E-03,Function
+biological regulation,3.02E-16,Process
+regulation of cellular process,9.48E-15,Process
+regulation of biological process,9.80E-15,Process
+signal transduction,2.48E-11,Process
+regulation of developmental process,5.17E-10,Process
+regulation of anatomical structure morphogenesis,4.87E-08,Process
+regulation of multicellular organismal development,8.41E-08,Process
+regulation of nervous system development,1.79E-07,Process
+regulation of trans-synaptic signaling,4.69E-07,Process
+modulation of chemical synaptic transmission,4.22E-07,Process
+trans-synaptic signaling,7.58E-07,Process
+neuron projection guidance,1.01E-06,Process
+signaling,1.06E-06,Process
+nervous system development,1.32E-06,Process
+synaptic signaling,1.65E-06,Process
+axon guidance,1.63E-06,Process
+regulation of neurogenesis,1.99E-06,Process
+regulation of neuron differentiation,1.91E-06,Process
+developmental process,1.82E-06,Process
+regulation of multicellular organismal process,1.61E-05,Process
+anatomical structure morphogenesis,1.79E-05,Process

@@ -54,7 +54,11 @@ write.table(gene_info, file = "gene_info.tsv",
             sep = "\t", quote = FALSE, row.names = FALSE)
 write.csv(count_data, file = "count_data.csv", row.names = FALSE)
 
+read.csv(count_data, file = "count_data.csv", row.names = FALSE)
 
+count_data <- as.data.frame(count_data)
+rownames(count_data) <- count_data[, 1]
+View(count_data)
 
 
 #Renaming Samples

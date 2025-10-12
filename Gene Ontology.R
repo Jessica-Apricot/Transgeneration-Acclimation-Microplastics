@@ -210,3 +210,127 @@ sum(LiLD_GO_padj < 0.05)
 
 
 
+
+# packages
+#install.packages("tidyverse")
+#install.packages("forcats")
+library(tidyverse)
+library(forcats)
+
+
+Up_Fun_GoHD <- read_csv("Up_Function_Go_HD.csv")   
+
+# --- ORDER TERMS WITHIN EACH PANEL BY SIGNIFICANCE ---------------------------
+
+
+# Order terms by significance
+
+Up_Fun_GoHD_ord <- Up_Fun_GoHD %>%
+  filter(!is.na(padj)) %>%  
+  mutate(term = fct_reorder(term, padj, .desc = TRUE),
+         neg_log10_padj = -log10(padj))
+
+
+ggplot(Up_Fun_GoHD_ord, aes(neg_log10_padj, term, color = category)) +
+  geom_point(size = 3) +
+  scale_color_manual(values = c(Function = "orange")) +
+  labs(x = expression(-log[10]~"(Adjusted P-value)"), y = "GO Terms", color = "Category") +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    strip.text = element_text(face = "bold"),
+    axis.title.y = element_text(margin = margin(r = 10))
+  )
+
+
+
+
+
+# --- ORDER TERMS WITHIN EACH PANEL BY SIGNIFICANCE ---------------------------
+# smaller padj = more significant; we’ll show the most significant near x=0
+Up_Fun_Pro_GoHD <- read_csv("Up_Fun_Pro_GoHD.csv")  
+Up_Fun_Pro_GoHD_ord <- Up_Fun_Pro_GoHD %>%
+  group_by(category) %>%
+  mutate(term = fct_reorder(term, padj, .desc = TRUE), neg_log10_padj = -log10(padj)) %>%  # order within panel
+  ungroup()
+
+# --- PLOT --------------------------------------------------------------------
+ggplot(Up_Fun_Pro_GoHD_ord, aes(neg_log10_padj, term, color = category)) +
+  geom_point(size = 3) +
+  facet_wrap(~ category, ncol = 1, scales = "free_y") +
+  scale_color_manual(
+    values = c(Process = "pink",
+               Function = "orange")  
+  ) +
+  scale_x_continuous(
+    expand = expansion(mult = c(0.02, 0.05))
+  ) +
+  labs(x = expression(-log[10]~"(Adjusted P-value)"), y = "GO Terms", color = "Category") +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    strip.text = element_text(face = "bold"),
+    axis.title.y = element_text(margin = margin(r = 10))
+  )
+
+
+
+
+
+
+Up_Fun_MP_DMSO <- read_csv("Up_Fuction_MP_DMSO.csv")   
+
+# --- ORDER TERMS WITHIN EACH PANEL BY SIGNIFICANCE ---------------------------
+
+
+# Order terms by significance
+
+Up_Fun_MP_DMSO_ord <- Up_Fun_MP_DMSO %>%
+  filter(!is.na(padj)) %>%  
+  mutate(term = fct_reorder(term, padj, .desc = TRUE),
+         neg_log10_padj = -log10(padj))
+
+
+ggplot(Up_Fun_MP_DMSO_ord, aes(neg_log10_padj, term, color = category)) +
+  geom_point(size = 3) +
+  scale_color_manual(values = c(Function = "orange")) +
+  labs(x = expression(-log[10]~"(Adjusted P-value)"), y = "GO Terms", color = "Category") +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    strip.text = element_text(face = "bold"),
+    axis.title.y = element_text(margin = margin(r = 10))
+  )
+
+
+# --- ORDER TERMS WITHIN EACH PANEL BY SIGNIFICANCE ---------------------------
+# smaller padj = more significant; we’ll show the most significant near x=0
+Up_Fun_Pro_Mp_DMSO <- read_csv("Up_Fun_Pro_Mp_DMSO.csv")  
+Up_Fun_Pro_Mp_DMSO_ord <- Up_Fun_Pro_Mp_DMSO %>%
+  group_by(category) %>%
+  mutate(term = fct_reorder(term, padj, .desc = TRUE), neg_log10_padj = -log10(padj)) %>%  # order within panel
+  ungroup()
+
+# --- PLOT --------------------------------------------------------------------
+ggplot(Up_Fun_Pro_Mp_DMSO_ord, aes(neg_log10_padj, term, color = category)) +
+  geom_point(size = 3) +
+  facet_wrap(~ category, ncol = 1, scales = "free_y") +
+  scale_color_manual(
+    values = c(Process = "pink",
+               Function = "orange")  
+  ) +
+  scale_x_continuous(
+    expand = expansion(mult = c(0.02, 0.05))
+  ) +
+  labs(x = expression(-log[10]~"(Adjusted P-value)"), y = "GO Terms", color = "Category") +
+  theme_minimal(base_size = 12) +
+  theme(
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    strip.text = element_text(face = "bold"),
+    axis.title.y = element_text(margin = margin(r = 10))
+  )
+

@@ -1,0 +1,42 @@
+term,padj,category
+protein binding,1.83E-16,Function
+ion gated channel activity,1.55E-13,Function
+gated channel activity,1.72E-13,Function
+ion channel activity,5.48E-13,Function
+substrate-specific channel activity,1.64E-12,Function
+channel activity,3.48E-11,Function
+passive transmembrane transporter activity,2.98E-11,Function
+cation channel activity,1.63E-10,Function
+inorganic molecular entity transmembrane transporter activity,2.61E-10,Function
+inorganic cation transmembrane transporter activity,3.74E-10,Function
+cation transmembrane transporter activity,1.97E-09,Function
+ion transmembrane transporter activity,3.98E-09,Function
+calcium ion transmembrane transporter activity,2.40E-08,Function
+voltage-gated channel activity,3.04E-08,Function
+voltage-gated ion channel activity,7.94E-08,Function
+ionotropic glutamate receptor activity,2.02E-07,Function
+voltage-gated cation channel activity,2.39E-07,Function
+metal ion transmembrane transporter activity,2.28E-07,Function
+neurotransmitter receptor activity,3.97E-07,Function
+transmembrane transporter activity,3.97E-07,Function
+biological regulation,1.67E-25,Process
+regulation of biological process,4.72E-23,Process
+regulation of cellular process,4.76E-22,Process
+regulation of trans-synaptic signaling,2.45E-17,Process
+modulation of chemical synaptic transmission,1.96E-17,Process
+nervous system development,1.18E-16,Process
+trans-synaptic signaling,1.16E-16,Process
+signaling,1.53E-16,Process
+synaptic signaling,8.69E-16,Process
+regulation of nervous system development,9.32E-15,Process
+anterograde trans-synaptic signaling,1.45E-13,Process
+chemical synaptic transmission,1.33E-13,Process
+regulation of developmental process,5.48E-13,Process
+cell-cell signaling,1.05E-12,Process
+regulation of neurogenesis,1.48E-12,Process
+signal transduction,2.03E-12,Process
+neuron projection guidance,3.37E-12,Process
+axon guidance,7.75E-12,Process
+regulation of multicellular organismal development,7.79E-12,Process
+regulation of transport,2.18E-11,Process
+ion transport,3.17E-11,Process
